@@ -1,3 +1,3 @@
-# multiserver
+![MultiServer](assets/banner.jpg)
 
-Basically MultiMC but for servers instead.
+> The most pragmatic and efficient way to orchestrate multiple Minecraft servers.
