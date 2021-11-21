@@ -54,17 +54,17 @@
                                 {
                                     "name": "main_window",
                                     "html": "./src/index.html",
-                                    "js": "./src/renderers/renderer_main_window.ts",
+                                    "js": "./src/renderers/main_window.ts",
                                     "preload": {
-                                        "js": "./src/preload.ts"
+                                        "js": "./src/preload/main_window.ts"
                                     }
                                 },
                                 {
                                     "name": "new_instance_window",
                                     "html": "./src/index.html",
-                                    "js": "./src/renderers/renderer_new_instance_window.ts",
+                                    "js": "./src/renderers/new_instance_window.ts",
                                     "preload": {
-                                        "js": "./src/preload.ts"
+                                        "js": "./src/preload/main_window.ts"
                                     }
                                 }
                             ]
