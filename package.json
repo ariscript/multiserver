@@ -3,6 +3,7 @@
     "productName": "multiserver",
     "version": "1.0.0",
     "description": "My Electron application description",
+    "repository": "https://github.com/dheerajpv/multiserver",
     "main": ".webpack/main",
     "scripts": {
         "start": "electron-forge start",
@@ -51,9 +52,20 @@
                             "config": "./webpack.renderer.config.js",
                             "entryPoints": [
                                 {
+                                    "name": "main_window",
                                     "html": "./src/index.html",
-                                    "js": "./src/renderer.ts",
-                                    "name": "main_window"
+                                    "js": "./src/renderers/renderer_main_window.ts",
+                                    "preload": {
+                                        "js": "./src/preload.ts"
+                                    }
+                                },
+                                {
+                                    "name": "new_instance_window",
+                                    "html": "./src/index.html",
+                                    "js": "./src/renderers/renderer_new_instance_window.ts",
+                                    "preload": {
+                                        "js": "./src/preload.ts"
+                                    }
                                 }
                             ]
                         }
@@ -87,6 +99,7 @@
     "dependencies": {
         "electron-squirrel-startup": "^1.0.0",
         "react": "^17.0.2",
-        "react-dom": "^17.0.2"
+        "react-dom": "^17.0.2",
+        "update-electron-app": "^2.0.1"
     }
 }
