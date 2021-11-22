@@ -11,6 +11,9 @@ const MainWindow = () => {
       <h1>Welcome to MultiServer</h1>
       {/* TODO: add instances view */}
       <button onClick={instances.newInstanceWindow}>New Instance</button>
+      <div className="absolute inset-0 bg-white text-center h-full flex flex-col justify justify-center">
+        ERB + TAILWIND = ❤
+      </div>
     </div>
   );
 };
