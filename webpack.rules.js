@@ -26,4 +26,44 @@ module.exports = [
       },
     },
   },
+  {
+    test: /\.global\.css$/,
+    use: [
+      {
+        loader: "style-loader",
+      },
+      {
+        loader: "css-loader",
+        options: {
+          sourceMap: true,
+        },
+      },
+      {
+        loader: "postcss-loader",
+        options: {
+          postcssOptions: {
+            plugins: [require("tailwindcss"), require("autoprefixer")],
+          },
+        },
+      },
+    ],
+  },
+  {
+    test: /^((?!\.global).)*\.css$/,
+    use: [
+      {
+        loader: "style-loader",
+      },
+      {
+        loader: "css-loader",
+        options: {
+          modules: {
+            localIdentName: "[name]__[local]__[hash:base64:5]",
+          },
+          sourceMap: true,
+          importLoaders: 1,
+        },
+      },
+    ],
+  },
 ];

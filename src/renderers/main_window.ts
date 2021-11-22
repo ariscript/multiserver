@@ -1,5 +1,6 @@
-import "../index.css";
-import "../windows/MainWIndow";
+import "tailwindcss/tailwind.css";
+import "../app.global.css";
+import "../windows/MainWindow";
 
 /**
  * This file will automatically be loaded by webpack and run in the "renderer" context.
