@@ -47,6 +47,7 @@
                 [
                     "@electron-forge/plugin-webpack",
                     {
+                        "devContentSecurityPolicy": "default-src 'self' 'unsafe-inline' https://serverjars.com https://launchermeta.mojang.com data:; script-src 'self' 'unsafe-eval' 'unsafe-inline' data:",
                         "mainConfig": "./webpack.main.config.js",
                         "renderer": {
                             "config": "./webpack.renderer.config.js",
@@ -54,17 +55,17 @@
                                 {
                                     "name": "main_window",
                                     "html": "./src/index.html",
-                                    "js": "./src/renderers/main_window.ts",
+                                    "js": "./src/windows/MainWindow.tsx",
                                     "preload": {
-                                        "js": "./src/preload/main_window.ts"
+                                        "js": "./src/preload.ts"
                                     }
                                 },
                                 {
                                     "name": "new_instance_window",
                                     "html": "./src/index.html",
-                                    "js": "./src/renderers/new_instance_window.ts",
+                                    "js": "./src/windows/NewInstanceWindow.tsx",
                                     "preload": {
-                                        "js": "./src/preload/main_window.ts"
+                                        "js": "./src/preload.ts"
                                     }
                                 }
                             ]
