@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import TypeSelect from "../components/TypeSelect";
 
 import "../app.global.css";
 
 const NewInstanceWindow = () => {
-    const getServerTypes = async () => {
-        const res = await fetch(
-            "https://serverjars.com/api/fetchTypes/servers"
-        );
-        const data = (await res.json()).response.servers as string[];
-        data.push("vanilla", "fabric"); // not returned from serverjars, fabric is handled differently
-
-        return data;
-    };
-
     const getVersions = async (type: string) => {
         if (type === "fabric") {
             const res = await fetch(
@@ -50,14 +41,9 @@ const NewInstanceWindow = () => {
         return data.map((v) => v.version) as string[];
     };
 
-    const [serverTypes, setServerTypes] = useState<string[]>([]);
     const [selectedServerType, setSelectedServerType] = useState("vanilla");
     const [versions, setVersions] = useState<string[]>([]);
     const [selectedVersion, setSelectedVersion] = useState<string>("");
-
-    useEffect(() => {
-        getServerTypes().then(setServerTypes);
-    }, []);
 
     useEffect(() => {
         if (selectedServerType) {
@@ -68,25 +54,10 @@ const NewInstanceWindow = () => {
     return (
         <div>
             <h2>New Instance</h2>
-            <select
-                name="type"
+            <TypeSelect
                 value={selectedServerType}
-                onChange={(e) => setSelectedServerType(e.target.value)}
-            >
-                {serverTypes.length === 0 && (
-                    <option disabled>Loading...</option>
-                )}
-                {serverTypes.length > 0 &&
-                    serverTypes.map((type) => (
-                        <option
-                            key={type}
-                            value={type}
-                            selected={type === "vanilla"}
-                        >
-                            {type.slice(0, 1).toUpperCase() + type.slice(1)}
-                        </option>
-                    ))}
-            </select>
+                onChange={setSelectedServerType}
+            />
             <select
                 name="version"
                 value={selectedVersion}
