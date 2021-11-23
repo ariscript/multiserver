@@ -1,16 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-declare const instances: {
-    newInstanceWindow: () => void;
-};
+import "../index.css";
 
 const MainWindow = () => {
     return (
         <div>
             <h1>Welcome to MultiServer</h1>
             {/* TODO: add instances view */}
-            <button onClick={instances.newInstanceWindow}>New Instance</button>
+            <button onClick={window.ipc.newInstanceWindow}>New Instance</button>
         </div>
     );
 };
