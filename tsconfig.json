@@ -10,9 +10,11 @@
         "outDir": "dist",
         "moduleResolution": "node",
         "resolveJsonModule": true,
+        "strict": true,
         "jsx": "react",
         "paths": {
-            "*": ["node_modules/*"]
+            "*": ["node_modules/*"],
+            "#components/*": ["src/components/*"]
         }
     },
     "include": ["src/**/*"]
