@@ -73,4 +73,5 @@ declare global {
     interface Window {
         ipc: IpcChannels;
     }
+    declare const ipc: IpcChannels;
 }

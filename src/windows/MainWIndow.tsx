@@ -8,7 +8,7 @@ const MainWindow = () => {
         <div>
             <h1>Welcome to MultiServer</h1>
             {/* TODO: add instances view */}
-            <button onClick={window.ipc.newInstanceWindow}>New Instance</button>
+            <button onClick={ipc.newInstanceWindow}>New Instance</button>
         </div>
     );
 };
