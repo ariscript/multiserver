@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
-import "../index.css";
+import "../app.global.css";
 
 const NewInstanceWindow = () => {
     const getServerTypes = async () => {
