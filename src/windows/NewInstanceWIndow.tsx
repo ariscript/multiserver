@@ -100,7 +100,7 @@ const NewInstanceWindow = () => {
                         </option>
                     ))}
             </select>
-            <button onClick={window.ipc.createInstance}>Create</button>
+            <button onClick={ipc.createInstance}>Create</button>
         </div>
     );
 };
