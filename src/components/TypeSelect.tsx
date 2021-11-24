@@ -10,6 +10,7 @@ const TypeSelect = ({ value, onChange }: TypeSelectProps): JSX.Element => {
         const res = await fetch(
             "https://serverjars.com/api/fetchTypes/servers"
         );
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const data = (await res.json()).response.servers as string[];
         data.push("vanilla", "fabric"); // not returned from serverjars, fabric is handled differently
 
@@ -19,7 +20,7 @@ const TypeSelect = ({ value, onChange }: TypeSelectProps): JSX.Element => {
     const [types, setTypes] = useState<string[]>([]);
 
     useEffect(() => {
-        getServerTypes().then(setTypes);
+        getServerTypes().then(setTypes).catch(console.error);
     }, []);
 
     return (
