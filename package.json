@@ -22,7 +22,8 @@
         "forge": {
             "packagerConfig": {
                 "extraResource": [
-                    "./resources/server.properties"
+                    "./resources/server.properties",
+                    "./resources/fabric-installer-0.9.0.jar"
                 ]
             },
             "makers": [

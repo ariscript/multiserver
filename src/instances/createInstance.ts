@@ -6,6 +6,7 @@ import https from "https";
 import fs from "fs/promises";
 import { createWriteStream } from "fs";
 import path from "path";
+import cp from "child_process";
 
 import type { InstanceOptions } from "../types";
 
@@ -55,6 +56,57 @@ export default async function create(
         // TODO: check if instance already exists
         // TODO: fabric
 
+        if (opts.type === "fabric") {
+            log.debug("Calling fabric installer");
+
+            try {
+                await new Promise<void>((res, rej) => {
+                    const installProcess = cp.spawn(
+                        `${opts.javaPath ?? "java"} -jar ${path.join(
+                            resourcesPath,
+                            "fabric-installer.jar"
+                        )} server -dir ${instanceRoot} -mcversion ${
+                            opts.version
+                        } -downloadMinecraft`,
+                        {
+                            shell: true,
+                            windowsHide: true,
+                        }
+                    );
+
+                    installProcess.stdout.on("data", (data) => {
+                        log.debug(`FABRIC INSTALLER info: ${String(data)}`);
+                    });
+
+                    installProcess.stderr.on("data", (data) => {
+                        log.debug(`FABRIC INSTALLER error: ${String(data)}`);
+                    });
+
+                    installProcess.on("close", (code) => {
+                        log.info(
+                            `FABRIC INSTALLER exited with code ${
+                                code ?? "null"
+                            }`
+                        );
+
+                        if (code === 0) {
+                            res();
+                        } else {
+                            rej();
+                        }
+                    });
+                });
+
+                log.info("Fabric installer finished");
+                log.info("Server creation complete");
+                return true;
+            } catch (e) {
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                log.error(`FABRIC INSTALLER failed: ${e}`);
+                return false;
+            }
+        }
+
         log.info(`Downloading ${opts.type} - ${opts.version} server jar`);
 
         const jarURL = await getJarURL(opts.type, opts.version);
@@ -68,6 +120,7 @@ export default async function create(
             stream.on("finish", () => stream.close());
         });
 
+        log.info("Server creation complete");
         return true;
     } catch (e) {
         log.error(e);
