@@ -17,19 +17,32 @@ const NewInstanceWindow = () => {
 
     const [agreed, setAgreed] = useState(false);
 
+    const [err, setErr] = useState(false);
+
     const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await ipc.createInstance({
+        const result = await ipc.createInstance({
             name,
             type,
             version,
             javaPath,
             jvmArgs,
         });
+
+        log.info(`Status: ${result ? "good" : "bad"}`);
+
+        if (result) {
+            ipc.closeWindow();
+        } else {
+            setErr(true);
+        }
     };
 
     return (
         <div>
+            {err && <div className="rounded-md p-2 m-2 w-max bg-red-400">
+                Error creating server. Check Logs for more information.
+            </div>}
             <h2>New Instance</h2>
             <form onSubmit={handleFormSubmit}>
                 <LabelInput
