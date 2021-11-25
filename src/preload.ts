@@ -6,10 +6,9 @@ import log from "electron-log";
 import type { IpcChannels } from "./types";
 
 contextBridge.exposeInMainWorld("ipc", {
-    newInstanceWindow: () => {
-        ipcRenderer.send("newInstanceWindow");
-    },
+    newInstanceWindow: () => ipcRenderer.send("newInstanceWindow"),
     createInstance: (opts) => ipcRenderer.invoke("createInstance", opts),
+    closeWindow: () => ipcRenderer.send("closeWindow"),
 } as IpcChannels);
 
 contextBridge.exposeInMainWorld("log", log.functions);

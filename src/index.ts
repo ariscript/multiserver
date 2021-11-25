@@ -2,6 +2,7 @@
 
 import { app, BrowserWindow, ipcMain } from "electron";
 import updater from "update-electron-app";
+import log from "electron-log";
 
 import createInstance from "./instances/createInstance";
 
@@ -59,14 +60,20 @@ app.on("activate", () => {
 
 ipcMain.on("newInstanceWindow", () => {
     const newInstanceWindow = new BrowserWindow({
-        height: 600,
-        width: 800,
+        height: 500,
+        width: 400,
         webPreferences: {
             preload: NEW_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY,
         },
     });
 
     newInstanceWindow.loadURL(NEW_INSTANCE_WINDOW_WEBPACK_ENTRY);
+});
+
+ipcMain.on("closeWindow", (e) => {
+    const sender = BrowserWindow.fromWebContents(e.sender);
+    log.debug(sender);
+    sender?.close();
 });
 
 ipcMain.handle("createInstance", createInstance);

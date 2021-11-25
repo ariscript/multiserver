@@ -18,4 +18,5 @@ export interface InstanceOptions {
 export type IpcChannels = {
     newInstanceWindow: () => void;
     createInstance: (opts: InstanceOptions) => Promise<boolean>;
+    closeWindow: () => void;
 };
