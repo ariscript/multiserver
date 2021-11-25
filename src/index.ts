@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+
 import { app, BrowserWindow, ipcMain } from "electron";
 import updater from "update-electron-app";
+
+import createInstance from "./instances/createInstance";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -9,7 +13,6 @@ declare const NEW_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
-    // eslint-disable-line global-require
     app.quit();
 }
 
@@ -66,6 +69,4 @@ ipcMain.on("newInstanceWindow", () => {
     newInstanceWindow.loadURL(NEW_INSTANCE_WINDOW_WEBPACK_ENTRY);
 });
 
-ipcMain.on("createInstance", () => {
-    console.log("yes");
-});
+ipcMain.handle("createInstance", createInstance);

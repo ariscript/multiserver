@@ -5,6 +5,7 @@
         "skipLibCheck": true,
         "esModuleInterop": true,
         "noImplicitAny": true,
+        "inlineSources": true,
         "sourceMap": true,
         "baseUrl": ".",
         "outDir": "dist",
