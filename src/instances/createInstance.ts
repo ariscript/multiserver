@@ -14,8 +14,6 @@ export default async function create(
     _event: IpcMainInvokeEvent,
     opts: InstanceOptions
 ): Promise<void> {
-    console.log(process.resourcesPath);
-
     const instanceRoot =
         process.platform === "win32"
             ? `${process.env.APPDATA as string}\\MultiServer\\instances\\${
@@ -26,6 +24,9 @@ export default async function create(
               }`;
 
     const resourcesPath = app.isPackaged ? process.resourcesPath : path.join(process.cwd(), "resources");
+
+    // TODO: check if instance already exists
+    // TODO: fabric
 
     await fs.mkdir(instanceRoot, { recursive: true });
     await fs.writeFile(
