@@ -1,4 +1,5 @@
 export interface InstanceOptions {
+    name: string;
     type:
         | "vanilla"
         | "spigot"
@@ -6,5 +7,15 @@ export interface InstanceOptions {
         | "paper"
         | "fabric"
         | "purpur"
-        | "tuinity";
+        | "tuinity"
+        | "fabric";
+
+    version: string;
+    javaPath?: string;
+    jvmArgs?: string;
 }
+
+export type IpcChannels = {
+    newInstanceWindow: () => void;
+    createInstance: (opts: InstanceOptions) => Promise<boolean>;
+};
