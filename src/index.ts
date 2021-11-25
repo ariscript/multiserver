@@ -4,7 +4,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import updater from "update-electron-app";
 import log from "electron-log";
 
-import createInstance from "./instances/createInstance";
+import createInstance from "./lib/instances/createInstance";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;

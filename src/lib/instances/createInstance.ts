@@ -8,7 +8,7 @@ import { createWriteStream } from "fs";
 import path from "path";
 import cp from "child_process";
 
-import type { InstanceOptions } from "../types";
+import type { InstanceOptions } from "../../types";
 
 /**
  * Creates a new minecraft server instance
