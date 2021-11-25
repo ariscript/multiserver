@@ -48,7 +48,7 @@
                     "@electron-forge/plugin-webpack",
                     {
                         "mainConfig": "./webpack.main.config.js",
-                        "devContentSecurityPolicy": "default-src 'self' 'unsafe-inline' https://serverjars.com https://launchermeta.mojang.com data:; script-src 'self' 'unsafe-eval' 'unsafe-inline' data:",
+                        "devContentSecurityPolicy": "default-src 'self' 'unsafe-inline' https://launchermeta.mojang.com https://papermc.io data:; script-src 'self' 'unsafe-eval' 'unsafe-inline' data:",
                         "renderer": {
                             "config": "./webpack.renderer.config.js",
                             "entryPoints": [

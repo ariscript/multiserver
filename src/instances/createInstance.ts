@@ -2,7 +2,7 @@ import { app, IpcMainInvokeEvent } from "electron";
 import fetch from "node-fetch";
 import log from "electron-log";
 
-import http from "http";
+import https from "https";
 import fs from "fs/promises";
 import { createWriteStream } from "fs";
 import path from "path";
@@ -17,47 +17,62 @@ import type { InstanceOptions } from "../types";
 export default async function create(
     _event: IpcMainInvokeEvent,
     opts: InstanceOptions
-): Promise<void> {
-    const instanceRoot =
-        process.platform === "win32"
-            ? `${process.env.APPDATA as string}\\MultiServer\\instances\\${
-                  opts.name
-              }`
-            : `${process.env.HOME as string}/.multiserver/instances/${
-                  opts.name
-              }`;
+): Promise<boolean> {
+    const instanceRoot = path.join(
+        (process.platform === "win32"
+            ? process.env.USERPROFILE
+            : process.env.HOME) as string,
+        ".multiserver",
+        "instances",
+        opts.name
+    );
 
     const resourcesPath = app.isPackaged
         ? process.resourcesPath
         : path.join(process.cwd(), "resources");
 
-    log.info(`Creating directory for instance ${opts.name}`);
-    await fs.mkdir(instanceRoot, { recursive: true });
+    try {
+        log.info(
+            `Creating directory for ${opts.type} server instance ${opts.name}`
+        );
+        await fs.mkdir(instanceRoot, { recursive: true });
 
-    log.silly("Writing configuration file");
-    await fs.writeFile(
-        path.join(instanceRoot, "multiserver.config.json"),
-        JSON.stringify(opts, (v) => v, 4)
-    );
+        log.silly("Writing configuration file");
+        await fs.writeFile(
+            path.join(instanceRoot, "multiserver.config.json"),
+            JSON.stringify(opts, (v) => v, 4)
+        );
 
-    log.silly("Writing eula.txt");
-    await fs.writeFile(path.join(instanceRoot, "eula.txt"), "eula=true");
+        log.silly("Writing eula.txt");
+        await fs.writeFile(path.join(instanceRoot, "eula.txt"), "eula=true");
 
-    log.silly("Writing server.properties using 1.17.1 template");
-    await fs.copyFile(
-        path.join(resourcesPath, "server.properties"),
-        path.join(instanceRoot, "server.properties")
-    );
+        log.silly("Writing server.properties using 1.17.1 template");
+        await fs.copyFile(
+            path.join(resourcesPath, "server.properties"),
+            path.join(instanceRoot, "server.properties")
+        );
 
-    // TODO: check if instance already exists
-    // TODO: fabric
+        // TODO: check if instance already exists
+        // TODO: fabric
 
-    log.info(`Downloading ${opts.type} - ${opts.version} server jar`);
+        log.info(`Downloading ${opts.type} - ${opts.version} server jar`);
 
-    const jarURL = await getJarURL(opts.type, opts.version);
-    http.request(jarURL).pipe(
-        createWriteStream(path.join(instanceRoot, "server.jar"))
-    );
+        const jarURL = await getJarURL(opts.type, opts.version);
+
+        log.debug(`Server JAR url: ${jarURL}`);
+        https.get(jarURL, (res) => {
+            const stream = createWriteStream(
+                path.join(instanceRoot, "server.jar")
+            );
+            res.pipe(stream);
+            stream.on("finish", () => stream.close());
+        });
+
+        return true;
+    } catch (e) {
+        log.error(e);
+        return false;
+    }
 }
 
 async function getJarURL(type: string, version: string): Promise<string> {
@@ -116,13 +131,13 @@ async function getJarURL(type: string, version: string): Promise<string> {
         const buildInfo = (await buildInfoRes.json()) as {
             // again too lazy for the whole type
             downloads: {
-                appliation: {
+                application: {
                     name: string;
                 };
             };
         };
 
-        const filename = buildInfo.downloads.appliation.name;
+        const filename = buildInfo.downloads.application.name;
 
         return `https://papermc.io/api/v2/projects/paper/versions/${version}/builds/${buildNumber}/downloads/${filename}`;
     }
