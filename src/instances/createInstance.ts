@@ -20,10 +20,7 @@ export default async function create(
     opts: InstanceOptions
 ): Promise<boolean> {
     const instanceRoot = path.join(
-        (process.platform === "win32"
-            ? process.env.USERPROFILE
-            : process.env.HOME) as string,
-        ".multiserver",
+        app.getPath("userData"),
         "instances",
         opts.name
     );
