@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { contextBridge, ipcRenderer } from "electron";
+import log from "electron-log";
 import type { IpcChannels } from "./types";
 
 contextBridge.exposeInMainWorld("ipc", {
@@ -10,3 +11,5 @@ contextBridge.exposeInMainWorld("ipc", {
     },
     createInstance: (opts) => ipcRenderer.invoke("createInstance", opts),
 } as IpcChannels);
+
+contextBridge.exposeInMainWorld("log", log.functions);
