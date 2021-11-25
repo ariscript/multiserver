@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import { getServerTypes } from "../lib/versions";
 import type { InstanceOptions } from "../types";
 
 interface TypeSelectProps {
@@ -8,21 +9,10 @@ interface TypeSelectProps {
 }
 
 const TypeSelect = ({ value, onChange }: TypeSelectProps): JSX.Element => {
-    const getServerTypes = async () => {
-        const res = await fetch(
-            "https://serverjars.com/api/fetchTypes/servers"
-        );
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        const data = (await res.json()).response.servers as string[];
-        data.push("vanilla", "fabric"); // not returned from serverjars, fabric is handled differently
-
-        return data;
-    };
-
     const [types, setTypes] = useState<string[]>([]);
 
     useEffect(() => {
-        getServerTypes().then(setTypes).catch(console.error);
+        setTypes(getServerTypes);
     }, []);
 
     return (
