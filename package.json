@@ -23,7 +23,7 @@
             "packagerConfig": {
                 "extraResource": [
                     "./resources/server.properties",
-                    "./resources/fabric-installer-0.9.0.jar"
+                    "./resources/fabric-installer.jar"
                 ]
             },
             "makers": [
@@ -94,10 +94,12 @@
         "electron": "16.0.1",
         "eslint": "^7.6.0",
         "eslint-plugin-import": "^2.20.0",
+        "file-loader": "^6.2.0",
         "fork-ts-checker-webpack-plugin": "^6.0.1",
         "node-loader": "^2.0.0",
         "postcss": "^8.3.11",
         "postcss-loader": "^6.2.0",
+        "prettier": "^2.5.0",
         "style-loader": "^3.0.0",
         "tailwindcss": "^2.2.19",
         "ts-loader": "^9.2.2",
@@ -109,6 +111,7 @@
         "node-fetch": "^3.1.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "sanitize-filename": "^1.6.3",
         "update-electron-app": "^2.0.1"
     }
 }

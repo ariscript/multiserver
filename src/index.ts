@@ -5,6 +5,7 @@ import updater from "update-electron-app";
 import log from "electron-log";
 
 import createInstance from "./lib/instances/createInstance";
+import { getInstances } from "./lib/instances/getInstances";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -19,9 +20,11 @@ if (require("electron-squirrel-startup")) {
 
 updater();
 
-const createWindow = (): void => {
+let mainWindow: BrowserWindow;
+
+const createWindow = () => {
     // Create the browser window.
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         height: 600,
         width: 800,
         webPreferences: {
@@ -72,8 +75,10 @@ ipcMain.on("newInstanceWindow", () => {
 
 ipcMain.on("closeWindow", (e) => {
     const sender = BrowserWindow.fromWebContents(e.sender);
-    log.debug(sender);
     sender?.close();
 });
 
 ipcMain.handle("createInstance", createInstance);
+ipcMain.handle("getInstances", getInstances);
+
+export const getMainWindow = (): BrowserWindow => mainWindow;
