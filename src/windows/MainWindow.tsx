@@ -11,7 +11,7 @@ const MainWindow = () => {
             {/* TODO: add instances view */}
             <button
                 onClick={ipc.newInstanceWindow}
-                className="rounded-md text-black bg-green-500 hover:bg-green-600 focus:bg-green-700 p-1 focus:text-white border-2 border-black transition-colors"
+                className="rounded-md text-black bg-green-400 focus:bg-green-500 px-2 py-1 focus:text-white border-2 border-black transition-colors"
             >
                 New Instance
             </button>

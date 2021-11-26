@@ -1,4 +1,5 @@
-import React, { type ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
+import React from "react";
 
 interface LabelInputProps {
     name: string;
@@ -6,6 +7,7 @@ interface LabelInputProps {
     value: string;
     type?: string;
     placeholder?: string;
+    divClassName?: string;
     labelClassName?: string;
     inputClassName?: string;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -13,10 +15,18 @@ interface LabelInputProps {
 
 const LabelInput = (props: LabelInputProps): JSX.Element => {
     return (
-        <div>
-            <label className={props.labelClassName} htmlFor={props.name}>{props.label}</label>
+        <div className={"flex items-center " + props.divClassName}>
+            <label
+                className={"flex-shrink-0 " + props.labelClassName}
+                htmlFor={props.name}
+            >
+                {props.label}
+            </label>
             <input
-                className={props.inputClassName}
+                className={
+                    "flex-1 px-2 py-1 text-sm rounded-sm " +
+                    props.inputClassName
+                }
                 id={props.name}
                 name={props.name}
                 type={props.type}
@@ -26,6 +36,6 @@ const LabelInput = (props: LabelInputProps): JSX.Element => {
             />
         </div>
     );
-}
+};
 
 export default LabelInput;

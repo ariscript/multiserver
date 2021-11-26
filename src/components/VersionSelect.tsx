@@ -24,6 +24,7 @@ const VersionSelect = ({
     return (
         <div>
             <select
+                className="text-sm p-1"
                 name="version"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}

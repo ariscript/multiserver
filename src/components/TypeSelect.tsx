@@ -18,6 +18,7 @@ const TypeSelect = ({ value, onChange }: TypeSelectProps): JSX.Element => {
     return (
         <div>
             <select
+                className="text-sm p-1"
                 name="server-type"
                 value={value}
                 onChange={(e) =>
