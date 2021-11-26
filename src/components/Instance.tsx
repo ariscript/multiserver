@@ -18,7 +18,7 @@ interface InstanceProps {
 const Instance = ({ info }: InstanceProps): JSX.Element => {
     return (
         <div className="rounded-md border-2 border-gray-800 p-1 m-2 flex flex-col justify-center items-center">
-            <img src={images[info.type]} width={64} />
+            <img src={images[info.type]} width={64} alt={info.type} />
             <p>{info.name}</p>
         </div>
     );
