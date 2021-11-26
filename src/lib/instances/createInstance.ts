@@ -1,6 +1,7 @@
-import { app, IpcMainInvokeEvent } from "electron";
+import type { IpcMainInvokeEvent } from "electron";
 import fetch from "node-fetch";
 import log from "electron-log";
+import sanitize from "sanitize-filename";
 
 import https from "https";
 import fs from "fs/promises";
@@ -8,6 +9,8 @@ import { createWriteStream } from "fs";
 import path from "path";
 import cp from "child_process";
 
+import { getMainWindow } from "../../index";
+import { instancesPath, resourcesPath } from "../constants";
 import type { InstanceOptions } from "../../types";
 
 /**
@@ -19,17 +22,20 @@ export default async function create(
     _event: IpcMainInvokeEvent,
     opts: InstanceOptions
 ): Promise<boolean> {
-    const instanceRoot = path.join(
-        app.getPath("userData"),
-        "instances",
-        opts.name
-    );
-
-    const resourcesPath = app.isPackaged
-        ? process.resourcesPath
-        : path.join(process.cwd(), "resources");
-
     try {
+        const sanitizedName = sanitize(
+            opts.name.toLowerCase().replace(/\s/g, "_")
+        );
+
+        if (sanitizedName === "") {
+            log.error(`Invalid instance name ${opts.name}`);
+            throw new Error(`Invalid instance name ${opts.name}`);
+        }
+
+        const instanceRoot = path.join(instancesPath, sanitizedName);
+
+        // TODO: check if instance already exists
+
         log.info(
             `Creating directory for ${opts.type} server instance ${opts.name}`
         );
@@ -38,7 +44,7 @@ export default async function create(
         log.silly("Writing configuration file");
         await fs.writeFile(
             path.join(instanceRoot, "multiserver.config.json"),
-            JSON.stringify(opts, (v) => v, 4)
+            JSON.stringify(opts, undefined, 4)
         );
 
         log.silly("Writing eula.txt");
@@ -49,9 +55,6 @@ export default async function create(
             path.join(resourcesPath, "server.properties"),
             path.join(instanceRoot, "server.properties")
         );
-
-        // TODO: check if instance already exists
-        // TODO: fabric
 
         if (opts.type === "fabric") {
             log.debug("Calling fabric installer");
@@ -122,6 +125,9 @@ export default async function create(
     } catch (e) {
         log.error(e);
         return false;
+    } finally {
+        // way less work than having to wire up an IPC event to let the main window know that theres an new instance
+        setTimeout(() => getMainWindow().reload(), 500);
     }
 }
 

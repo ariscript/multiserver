@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("ipc", {
     newInstanceWindow: () => ipcRenderer.send("newInstanceWindow"),
     createInstance: (opts) => ipcRenderer.invoke("createInstance", opts),
     closeWindow: () => ipcRenderer.send("closeWindow"),
+    getInstances: () => ipcRenderer.invoke("getInstances"),
 } as IpcChannels);
 
 contextBridge.exposeInMainWorld("log", log.functions);
