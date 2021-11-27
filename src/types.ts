@@ -16,4 +16,5 @@ export type IpcChannels = {
     createInstance: (opts: InstanceOptions) => Promise<boolean>;
     closeWindow: () => void;
     getInstances: () => Promise<InstanceInfo[]>;
+    runInstance: (name: string) => void;
 };

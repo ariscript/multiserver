@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import React, { type ChangeEvent } from "react";
 
 interface LabelInputProps {
@@ -6,17 +7,14 @@ interface LabelInputProps {
     value: string;
     type?: string;
     placeholder?: string;
-    labelClassName?: string;
-    inputClassName?: string;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const LabelInput = (props: LabelInputProps): JSX.Element => {
     return (
         <div>
-            <label className={props.labelClassName} htmlFor={props.name}>{props.label}</label>
-            <input
-                className={props.inputClassName}
+            <TextField
+                label={props.label}
                 id={props.name}
                 name={props.name}
                 type={props.type}
@@ -26,6 +24,6 @@ const LabelInput = (props: LabelInputProps): JSX.Element => {
             />
         </div>
     );
-}
+};
 
 export default LabelInput;

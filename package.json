@@ -49,7 +49,7 @@
                     "@electron-forge/plugin-webpack",
                     {
                         "mainConfig": "./webpack.main.config.js",
-                        "devContentSecurityPolicy": "default-src 'self' 'unsafe-inline' https://launchermeta.mojang.com https://papermc.io data:; script-src 'self' 'unsafe-eval' 'unsafe-inline' data:",
+                        "devContentSecurityPolicy": "default-src 'self' 'unsafe-inline' https://fonts.google.com https://fonts.googleapis.com https://fonts.gstatic.com https://launchermeta.mojang.com https://papermc.io data:; script-src 'self' 'unsafe-eval' 'unsafe-inline' data:",
                         "renderer": {
                             "config": "./webpack.renderer.config.js",
                             "entryPoints": [
@@ -106,6 +106,10 @@
         "typescript": "^4.0.2"
     },
     "dependencies": {
+        "@emotion/react": "^11.7.0",
+        "@emotion/styled": "^11.6.0",
+        "@mui/icons-material": "^5.2.0",
+        "@mui/material": "^5.2.1",
         "electron-log": "^4.4.1",
         "electron-squirrel-startup": "^1.0.0",
         "node-fetch": "^3.1.0",

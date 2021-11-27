@@ -7,6 +7,7 @@ import LabelInput from "../components/LabelInput";
 import type { InstanceOptions } from "../types";
 
 import "../app.global.css";
+import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 
 const NewInstanceWindow = () => {
     const [name, setName] = useState("");
@@ -40,62 +41,68 @@ const NewInstanceWindow = () => {
 
     return (
         <div>
-            {err && <div className="rounded-md p-2 m-2 w-max bg-red-400">
-                Error creating server. Check Logs for more information.
-            </div>}
-            <h2>New Instance</h2>
-            <form onSubmit={handleFormSubmit}>
-                <LabelInput
+            {err && (
+                <div className="rounded-md p-2 m-2 w-max bg-red-400">
+                    Error creating server. Check Logs for more information.
+                </div>
+            )}
+            <h2 className="font-xl font-bold mb-2">New Instance</h2>
+            <form
+                onSubmit={handleFormSubmit}
+                className="flex container flex-col space-y-1"
+            >
+                <TextField
                     name="name"
                     label="Name"
                     placeholder="My cool server"
+                    required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    labelClassName="mr-2"
-                    inputClassName="border-2 p-1"
                 />
 
-                <TypeSelect value={type} onChange={setType} />
-                <VersionSelect
-                    type={type}
-                    value={version}
-                    onChange={setVersion}
-                />
+                <div className="flex flex-row justify-start space-x-2">
+                    <TypeSelect value={type} onChange={setType} />
+                    <VersionSelect
+                        type={type}
+                        value={version}
+                        onChange={setVersion}
+                    />
+                </div>
 
-                <LabelInput
+                <TextField
                     name="java-path"
-                    type="text"
+                    label="Java Path (advanced)"
                     placeholder="java"
-                    label="Java Path"
                     value={javaPath ?? ""}
                     onChange={(e) => setJavaPath(e.target.value)}
-                    labelClassName="mr-2"
-                    inputClassName="border-2 p-1"
                 />
 
-                <LabelInput
+                <TextField
                     name="jvm-args"
-                    type="text"
+                    label="JVM Args (advanced)"
                     placeholder="-Xmx1024M"
-                    label="JVM Args"
                     value={jvmArgs}
                     onChange={(e) => setJvmArgs(e.target.value)}
-                    labelClassName="mr-2"
-                    inputClassName="border-2 p-1"
                 />
 
-                <LabelInput
-                    name="eula"
-                    type="checkbox"
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={agreed}
+                            onChange={(e) => setAgreed(e.target.checked)}
+                        />
+                    }
                     label="I agree to the Mojang EULA"
-                    value={String(agreed)}
-                    onChange={(e) => setAgreed(e.target.checked)}
-                    labelClassName="mr-2"
                 />
 
-                <button role="button" disabled={!agreed} className={`focus:bg-green-600 ${!agreed ? "bg-gray-500": "bg-green-500"} rounded-md border-2 border-black p-2 transition-colors`}>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    disabled={!agreed}
+                >
                     Create
-                </button>
+                </Button>
             </form>
         </div>
     );
