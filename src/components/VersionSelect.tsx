@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Select, MenuItem } from "@mui/material";
 
 import { getVersions } from "../lib/versions";
 
@@ -23,19 +24,21 @@ const VersionSelect = ({
 
     return (
         <div>
-            <select
+            <Select
                 name="version"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
             >
-                {versions.length === 0 && <option disabled>Loading...</option>}
+                {versions.length === 0 && (
+                    <MenuItem disabled>Loading...</MenuItem>
+                )}
                 {versions.length > 0 &&
                     versions.map((version) => (
-                        <option key={version} value={version}>
+                        <MenuItem key={version} value={version}>
                             {version}
-                        </option>
+                        </MenuItem>
                     ))}
-            </select>
+            </Select>
         </div>
     );
 };

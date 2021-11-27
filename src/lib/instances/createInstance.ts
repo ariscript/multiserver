@@ -18,7 +18,7 @@ import type { InstanceOptions } from "../../types";
  *
  * @param opts options for the instance
  */
-export default async function create(
+export async function createInstance(
     _event: IpcMainInvokeEvent,
     opts: InstanceOptions
 ): Promise<boolean> {

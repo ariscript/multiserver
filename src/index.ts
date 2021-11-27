@@ -4,8 +4,9 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import updater from "update-electron-app";
 import log from "electron-log";
 
-import createInstance from "./lib/instances/createInstance";
+import { createInstance } from "./lib/instances/createInstance";
 import { getInstances } from "./lib/instances/getInstances";
+import { runInstance } from "./lib/instances/runInstance";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -31,6 +32,8 @@ const createWindow = () => {
             preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
         },
     });
+
+    if (app.isPackaged) mainWindow.removeMenu();
 
     // and load the index.html of the app.
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
@@ -70,6 +73,8 @@ ipcMain.on("newInstanceWindow", () => {
         },
     });
 
+    if (app.isPackaged) newInstanceWindow.removeMenu();
+
     newInstanceWindow.loadURL(NEW_INSTANCE_WINDOW_WEBPACK_ENTRY);
 });
 
@@ -80,5 +85,6 @@ ipcMain.on("closeWindow", (e) => {
 
 ipcMain.handle("createInstance", createInstance);
 ipcMain.handle("getInstances", getInstances);
+ipcMain.on("runInstance", runInstance);
 
 export const getMainWindow = (): BrowserWindow => mainWindow;

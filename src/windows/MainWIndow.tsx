@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import type { InstanceInfo } from "../types";
+import { Fab } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 import "../app.global.css";
 import Instance from "../components/Instance";
+import type { InstanceInfo } from "../types";
 
 const MainWindow = () => {
     const [instances, setInstances] = useState<InstanceInfo[]>([]);
@@ -22,18 +24,21 @@ const MainWindow = () => {
         <div>
             <h1>Welcome to MultiServer</h1>
 
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 gap-2">
                 {instances.map((instance) => (
-                    <Instance info={instance.info} />
+                    <Instance key={instance.info.name} info={instance.info} />
                 ))}
             </div>
 
-            <button
-                onClick={ipc.newInstanceWindow}
-                className="rounded-md text-black bg-green-500 hover:bg-green-600 focus:bg-green-700 p-2 focus:text-white border-2 border-black transition-colors"
-            >
-                New Instance
-            </button>
+            <div className="fixed bottom-4 right-4">
+                <Fab
+                    color="primary"
+                    aria-label="New instance"
+                    onClick={ipc.newInstanceWindow}
+                >
+                    <AddIcon />
+                </Fab>
+            </div>
         </div>
     );
 };

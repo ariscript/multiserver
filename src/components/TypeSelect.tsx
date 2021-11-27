@@ -1,3 +1,4 @@
+import { MenuItem, Select } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
 import { getServerTypes } from "../lib/versions";
@@ -17,21 +18,21 @@ const TypeSelect = ({ value, onChange }: TypeSelectProps): JSX.Element => {
 
     return (
         <div>
-            <select
+            <Select
                 name="server-type"
                 value={value}
                 onChange={(e) =>
                     onChange(e.target.value as InstanceOptions["type"])
                 }
             >
-                {types.length === 0 && <option disabled>Loading...</option>}
+                {types.length === 0 && <MenuItem disabled>Loading...</MenuItem>}
                 {types.length > 0 &&
                     types.map((type) => (
-                        <option key={type} value={type}>
+                        <MenuItem key={type} value={type}>
                             {type.slice(0, 1).toUpperCase() + type.slice(1)}
-                        </option>
+                        </MenuItem>
                     ))}
-            </select>
+            </Select>
         </div>
     );
 };
