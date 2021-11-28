@@ -60,15 +60,30 @@ export async function runInstance(
         if (!window.isDestroyed)
             window.webContents.send("stderr", String(data));
     });
+
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     const playerQuery = setInterval(async () => {
+        log.debug("interval running");
+
         try {
             const results = await queryFull("localhost");
 
+            const oldPlayerSet = [...new Set(oldPlayers)];
+            const newPlayerSet = [...new Set(results.players.list)];
+
             // send the server new players list if it has changed
-            if (oldPlayers.every((p) => !results.players.list.includes(p))) {
-                if (!window.isDestroyed)
-                    window.webContents.send("players", results.players);
+            if (
+                oldPlayerSet.length !== newPlayerSet.length ||
+                oldPlayerSet.some((p, i) => p !== newPlayerSet[i])
+            ) {
+                // no need to check if window is destroyed
+                // the interval gets cleared before anyway
+                // (also it doesn't work if i do the check)
+                log.info(`Server ${name}: Player list changed`);
+                log.info("Old", oldPlayers);
+                log.info("New", results.players.list);
+
+                window.webContents.send("players", results.players.list);
                 oldPlayers = results.players.list;
             }
         } catch (e) {
