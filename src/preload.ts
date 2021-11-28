@@ -32,6 +32,7 @@ contextBridge.exposeInMainWorld("server", {
     onCrash: (fn: (code: number | null) => Awaited<void>) => {
         ipcRenderer.on("crash", (event, code) => fn(code));
     },
+    rcon: (command: string) => ipcRenderer.invoke("rcon", command),
 } as ServerIpc);
 
 window.onbeforeunload = () => {

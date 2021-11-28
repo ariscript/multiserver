@@ -48,16 +48,17 @@ export async function runInstance(
             rconClient
                 .connect("localhost")
                 .then(() => rconClient.login("multiserver"))
+                .then(() => log.debug("RCON connected"))
                 .catch((err) => log.error(err));
         }
 
-        if (!window.isDestroyed)
+        if (!window.isDestroyed())
             window.webContents.send("stdout", String(data));
     });
 
     server.stderr.on("data", (data) => {
         log.debug(`SERVER ${info.name} error: ${String(data)}`);
-        if (!window.isDestroyed)
+        if (!window.isDestroyed())
             window.webContents.send("stderr", String(data));
     });
 
@@ -83,7 +84,8 @@ export async function runInstance(
                 log.info("Old", oldPlayers);
                 log.info("New", results.players.list);
 
-                window.webContents.send("players", results.players.list);
+                if (!window.isDestroyed())
+                    window.webContents.send("players", results.players.list);
                 oldPlayers = results.players.list;
             }
         } catch (e) {
@@ -92,24 +94,27 @@ export async function runInstance(
     }, 5000); // query results are cached for 5 seconds by the server
 
     server.on("close", (code) => {
+        rconClient.close().catch((err) => log.error(err));
+
         log.debug(
             `SERVER ${info.name} closed with exit code ${code ?? "null"}`
         );
 
         clearInterval(playerQuery);
+        ipcMain.removeHandler("rcon");
 
-        if (!window.isDestroyed) {
+        if (!window.isDestroyed()) {
             if (code === 0) window.webContents.send("close");
             else window.webContents.send("crash", code);
         }
+
+        server.removeAllListeners();
     });
 
     window.on("close", () => {
         try {
-            rconClient
-                .run("stop")
-                .then(() => rconClient.close())
-                .catch((err) => log.error(err));
+            server.stdin.write("stop\n");
+            rconClient.close().catch((err) => log.error(err));
         } catch {
             server.kill();
         }
@@ -117,6 +122,8 @@ export async function runInstance(
 
     ipcMain.handle("rcon", async (event, command: string) => {
         log.debug(`RCON command to ${info.name}: ${command}`);
-        await rconClient.run(command);
+        const output = await rconClient.execute(command);
+        log.debug(`RCON output from ${info.name}: ${output}`);
+        return output;
     });
 }
