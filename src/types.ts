@@ -26,4 +26,5 @@ export interface ServerIpc {
     onPlayers: (fn: (players: string[]) => Awaited<void>) => void;
     onClose: (fn: () => Awaited<void>) => void;
     onCrash: (fn: (code: number | null) => Awaited<void>) => void;
+    rcon: (command: string) => Promise<string>;
 }
