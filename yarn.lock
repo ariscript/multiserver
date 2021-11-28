@@ -2817,6 +2817,11 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
+eventemitter2@^6.4.5:
+  version "6.4.5"
+  resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-6.4.5.tgz#97380f758ae24ac15df8353e0cc27f8b95644655"
+  integrity sha512-bXE7Dyc1i6oQElDG0jMRZJrRAn9QR2xyyFGmBdZleNmyQX0FqGYmhZIrIrpPfm/w//LTo4tVQGOGQcGCb5q9uw==
+
 eventemitter3@^4.0.0:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
@@ -4667,6 +4672,19 @@ min-document@^2.19.0:
   integrity sha1-e9KC4/WELtKVu3SM3Z8f+iyCRoU=
   dependencies:
     dom-walk "^0.1.0"
+
+minecraft-motd-util@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/minecraft-motd-util/-/minecraft-motd-util-1.1.3.tgz#1da3d2de06ec1ba49a3fc0e6217a3b3cb7d44d73"
+  integrity sha512-m2OrSRBLzD/c48LGURPjJPZgfdbw0W0/TpwCnI3ytFjkLjc+NsUky59a5EuQ+PlIFRmw/grzbbKUJyF7TPOiJg==
+
+minecraft-server-util@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/minecraft-server-util/-/minecraft-server-util-5.0.0.tgz#a1a5e38e2b9d39d99c48fc5003ebed654ef563e7"
+  integrity sha512-fxaRVAyIbRm4ONI+ct4plPWDF3VBcec/cdLUSbUW0JwzncI71rJQwC+MrHO3qaSM0ItZXjpD8l3KjbJwLhZW0Q==
+  dependencies:
+    eventemitter2 "^6.4.5"
+    minecraft-motd-util "^1.1.3"
 
 minimalistic-assert@^1.0.0:
   version "1.0.1"

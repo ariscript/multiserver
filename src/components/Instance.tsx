@@ -47,7 +47,7 @@ const Instance = ({ info }: InstanceProps): JSX.Element => {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>Run</MenuItem>
+                <MenuItem onClick={handleRun}>Run</MenuItem>
                 <MenuItem onClick={handleClose}>Edit</MenuItem>
                 <MenuItem onClick={handleClose}>Delete</MenuItem>
             </Menu>

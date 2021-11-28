@@ -1,5 +1,107 @@
-import type { IpcMainEvent } from "electron";
+import { ipcMain, type IpcMainEvent, type BrowserWindow } from "electron";
+import log from "electron-log";
 
-export function runInstance(event: IpcMainEvent, name: string): void {
-    return;
+import cp from "child_process";
+
+import { getInstances } from "./getInstances";
+import { queryFull, RCON } from "minecraft-server-util";
+
+export async function runInstance(
+    _event: IpcMainEvent,
+    name: string,
+    window: BrowserWindow
+): Promise<void> {
+    log.debug(`Running instance: ${name}`);
+
+    const instances = await getInstances();
+    const instance = instances.find((i) => i.info.name === name);
+
+    if (!instance) {
+        log.error(`Instance not found: ${name}`);
+        return;
+    }
+
+    await new Promise((res) => window.webContents.on("did-finish-load", res));
+    window.webContents.send("serverInfo", instance);
+
+    const { info, path } = instance;
+
+    const server = cp.spawn(
+        `java ${info.jvmArgs ?? ""} -jar ${
+            info.type === "fabric" ? "fabric-server-launch.jar" : "server.jar"
+        } nogui`,
+        {
+            shell: true,
+            windowsHide: true,
+            cwd: path,
+        }
+    );
+
+    const rconClient = new RCON();
+    let oldPlayers: string[] = [];
+
+    server.stdout.on("data", (data) => {
+        log.debug(`SERVER ${info.name} info: ${String(data)}`);
+
+        if (String(data).includes("RCON running on 0.0.0.0:25575")) {
+            log.info("Server loading complete, RCON connecting");
+            rconClient
+                .connect("localhost")
+                .then(() => rconClient.login("multiserver"))
+                .catch((err) => log.error(err));
+        }
+
+        if (!window.isDestroyed)
+            window.webContents.send("stdout", String(data));
+    });
+
+    server.stderr.on("data", (data) => {
+        log.debug(`SERVER ${info.name} error: ${String(data)}`);
+        if (!window.isDestroyed)
+            window.webContents.send("stderr", String(data));
+    });
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    const playerQuery = setInterval(async () => {
+        try {
+            const results = await queryFull("localhost");
+
+            // send the server new players list if it has changed
+            if (oldPlayers.every((p) => !results.players.list.includes(p))) {
+                if (!window.isDestroyed)
+                    window.webContents.send("players", results.players);
+                oldPlayers = results.players.list;
+            }
+        } catch (e) {
+            log.silly(e);
+        }
+    }, 5000); // query results are cached for 5 seconds by the server
+
+    server.on("close", (code) => {
+        log.debug(
+            `SERVER ${info.name} closed with exit code ${code ?? "null"}`
+        );
+
+        clearInterval(playerQuery);
+
+        if (!window.isDestroyed) {
+            if (code === 0) window.webContents.send("close");
+            else window.webContents.send("crash", code);
+        }
+    });
+
+    window.on("close", () => {
+        try {
+            rconClient
+                .run("stop")
+                .then(() => rconClient.close())
+                .catch((err) => log.error(err));
+        } catch {
+            server.kill();
+        }
+    });
+
+    ipcMain.handle("rcon", async (event, command: string) => {
+        log.debug(`RCON command to ${info.name}: ${command}`);
+        await rconClient.run(command);
+    });
 }
