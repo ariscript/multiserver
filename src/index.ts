@@ -13,6 +13,8 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 declare const NEW_INSTANCE_WINDOW_WEBPACK_ENTRY: string;
 declare const NEW_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
+declare const RUN_WINDOW_WEBPACK_ENTRY: string;
+declare const RUN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -85,6 +87,20 @@ ipcMain.on("closeWindow", (e) => {
 
 ipcMain.handle("createInstance", createInstance);
 ipcMain.handle("getInstances", getInstances);
-ipcMain.on("runInstance", runInstance);
+ipcMain.on("runInstance", (e, name) => {
+    const runWindow = new BrowserWindow({
+        height: 600,
+        width: 800,
+        webPreferences: {
+            preload: RUN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+        },
+    });
+
+    if (app.isPackaged) runWindow.removeMenu();
+
+    runWindow.loadURL(RUN_WINDOW_WEBPACK_ENTRY);
+
+    runInstance(e, name, runWindow);
+});
 
 export const getMainWindow = (): BrowserWindow => mainWindow;
