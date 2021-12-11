@@ -12,7 +12,7 @@ import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 const NewInstanceWindow = () => {
     const [name, setName] = useState("");
     const [type, setType] = useState<InstanceOptions["type"]>("vanilla");
-    const [version, setVersion] = useState("1.18");
+    const [version, setVersion] = useState("1.18.1");
     const [javaPath, setJavaPath] = useState<string | undefined>();
     const [jvmArgs, setJvmArgs] = useState("");
 
