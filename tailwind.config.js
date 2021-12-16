@@ -1,6 +1,7 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
+    mode: "jit",
     purge: [
         "./src/windows/**/*.{js,jsx,ts,tsx}",
         "./src/components/**/*.{js,jsx,ts,tsx}",
@@ -19,5 +20,8 @@ module.exports = {
     variants: {
         extend: {},
     },
-    plugins: [],
+    plugins: [require("tailwind-scrollbar")],
+    variants: {
+        scrollbar: ["rounded"],
+    },
 };

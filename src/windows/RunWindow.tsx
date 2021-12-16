@@ -2,15 +2,20 @@ import { Button, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Helmet from "react-helmet";
+import Repl from "../components/Repl";
 
 import "../app.global.css";
 import { InstanceInfo } from "../types";
 
+interface ServerOutput {
+    type: "stdout" | "stderr";
+    content: string;
+}
+
 const RunWindow = (): JSX.Element => {
     const [info, setInfo] = useState<InstanceInfo | null>(null);
     const [players, setPlayers] = useState<string[]>([]);
-    const [stdout, setStdout] = useState<string[]>([]);
-    const [stderr, setStderr] = useState<string[]>([]);
+    const [output, setOutput] = useState<ServerOutput[]>([]);
 
     const [command, setCommand] = useState<string>("");
 
@@ -18,18 +23,22 @@ const RunWindow = (): JSX.Element => {
         server.onInfo(setInfo);
         server.onPlayers(setPlayers);
 
-        server.onStdout((out) => setStdout([...stdout, out]));
-        server.onStderr((err) => setStderr([...stderr, err]));
+        server.onStdout((out) =>
+            setOutput((s) => [...s, { type: "stdout", content: out }])
+        );
+        server.onStderr((err) =>
+            setOutput((s) => [...s, { type: "stderr", content: err }])
+        );
     }, []);
 
     return (
-        <div>
+        <div className="overflow-y-hidden">
             <Helmet>
                 <title>{`Running server ${info?.info.name ?? ""}`}</title>
             </Helmet>
 
-            <div className="grid grid-cols-2">
-                <div>
+            <div className="grid grid-cols-3 max-h-full">
+                <div className="col-span-1">
                     <h3>Players</h3>
                     <ul>
                         {players.map((p) => (
@@ -37,19 +46,28 @@ const RunWindow = (): JSX.Element => {
                         ))}
                     </ul>
                 </div>
-                <div>
-                    <h3>Log</h3>
+                <div className="grid grid-rows-2 h-full max-h-full col-span-2">
                     <div>
-                        <pre>{stdout.join("\n")}</pre>
-                        <pre className="text-red-600">{stderr.join("\n")}</pre>
+                        <h3>Log</h3>
+                        <pre className="overflow-scroll rounded-md bg-gray-400 max-h-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-rounded scrollbar-thumb-blue-700">
+                            {output.map((o) => (
+                                <div
+                                    key={o.content}
+                                    className={
+                                        o.type === "stderr"
+                                            ? "text-red-600"
+                                            : ""
+                                    }
+                                >
+                                    {o.content}
+                                </div>
+                            ))}
+                        </pre>
+                    </div>
+                    <div>
+                        <Repl exec={server.rcon} />
                     </div>
                 </div>
-                <TextField
-                    label="Command"
-                    value={command}
-                    onChange={(e) => setCommand(e.target.value)}
-                />
-                <Button onClick={() => server.rcon(command)}>Send</Button>
             </div>
         </div>
     );
