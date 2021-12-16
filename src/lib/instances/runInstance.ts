@@ -41,7 +41,7 @@ export async function runInstance(
     let oldPlayers: string[] = [];
 
     server.stdout.on("data", (data) => {
-        log.debug(`SERVER ${info.name} info: ${String(data)}`);
+        log.debug(`SERVER ${info.name} info: ${String(data).trim()}`);
 
         if (String(data).includes("RCON running on 0.0.0.0:25575")) {
             log.info("Server loading complete, RCON connecting");
@@ -57,15 +57,13 @@ export async function runInstance(
     });
 
     server.stderr.on("data", (data) => {
-        log.debug(`SERVER ${info.name} error: ${String(data)}`);
+        log.debug(`SERVER ${info.name} error: ${String(data).trim()}`);
         if (!window.isDestroyed())
             window.webContents.send("stderr", String(data));
     });
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     const playerQuery = setInterval(async () => {
-        log.debug("interval running");
-
         try {
             const results = await queryFull("localhost");
 
