@@ -21,8 +21,10 @@ const MainWindow = () => {
     }, []);
 
     return (
-        <div>
-            <h1>Welcome to MultiServer</h1>
+        <div className="p-8">
+            <h1 className="text-3xl font-bold font-sans mb-4">
+                Welcome to MultiServer
+            </h1>
 
             <div className="grid grid-cols-3 gap-2">
                 {instances.map((instance) => (

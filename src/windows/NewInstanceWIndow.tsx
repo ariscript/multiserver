@@ -40,7 +40,7 @@ const NewInstanceWindow = () => {
     };
 
     return (
-        <div>
+        <div className="p-4">
             {err && (
                 <div className="rounded-md p-2 m-2 w-max bg-red-400">
                     Error creating server. Check Logs for more information.

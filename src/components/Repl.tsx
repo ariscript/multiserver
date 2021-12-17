@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, type CSSProperties } from "react";
 
 import "../app.global.css";
 
@@ -9,13 +9,20 @@ interface ReplCommandData {
 
 interface ReplProps {
     exec(command: string): Promise<string>;
+    className?: string;
+    prompt?: string;
+    style?: CSSProperties;
 }
 
-const Repl = ({ exec }: ReplProps): JSX.Element => {
+const Repl = ({
+    exec,
+    className,
+    prompt = ">",
+    style,
+}: ReplProps): JSX.Element => {
     const [history, setHistory] = useState<ReplCommandData[]>([]);
     const [commands, setCommands] = useState<ReplCommandData[]>([]);
     const [command, setCommand] = useState("");
-    const [isExec, setIsExec] = useState(false);
     const [placeholder, setPlaceholder] = useState("");
     const [index, setIndex] = useState(0);
 
@@ -25,7 +32,7 @@ const Repl = ({ exec }: ReplProps): JSX.Element => {
     useEffect(() => {
         setCommands(history.filter(({ command }) => command));
 
-        if (term.current) term.current.scrollTop = term.current?.scrollHeight;
+        if (term.current) term.current.scrollTop = term.current.scrollHeight;
     }, [history]);
 
     useEffect(() => {
@@ -35,12 +42,16 @@ const Repl = ({ exec }: ReplProps): JSX.Element => {
     }, [index]);
 
     return (
-        <pre ref={term} className="overflow-scroll">
+        <pre
+            ref={term}
+            className={`overflow-scroll ${className ?? ""}`}
+            style={style}
+        >
             <div ref={log}>
                 {[...history].reverse().map((e, i) => (
                     <div key={i}>
                         <span>
-                            {">"} {e.command}
+                            {prompt} {e.command}
                         </span>
                         <div>{e.data}</div>
                     </div>
@@ -48,14 +59,15 @@ const Repl = ({ exec }: ReplProps): JSX.Element => {
             </div>
             {placeholder && (
                 <span>
-                    {">"} {placeholder}
+                    {prompt} {placeholder}
                 </span>
             )}
-            <div>
-                {!isExec && <span>{"> "}</span>}
+            <div className="flex flex-row">
+                <span>{`${prompt} `}</span>
                 <input
                     autoFocus
                     type="text"
+                    className="focus:outline-none w-full mb-2"
                     value={command}
                     onChange={(e) => setCommand(e.target.value)}
                     onKeyDown={async (e) => {
