@@ -1,5 +1,4 @@
-import { Button, TextField } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import Helmet from "react-helmet";
 import Repl from "../components/Repl";
@@ -17,7 +16,7 @@ const RunWindow = (): JSX.Element => {
     const [players, setPlayers] = useState<string[]>([]);
     const [output, setOutput] = useState<ServerOutput[]>([]);
 
-    const [command, setCommand] = useState<string>("");
+    const log = useRef<HTMLPreElement>(null);
 
     useEffect(() => {
         server.onInfo(setInfo);
@@ -31,14 +30,21 @@ const RunWindow = (): JSX.Element => {
         );
     }, []);
 
+    useEffect(() => {
+        if (log.current) log.current.scrollTop = log.current.scrollHeight;
+    });
+
     return (
-        <div className="overflow-y-hidden">
+        <>
             <Helmet>
                 <title>{`Running server ${info?.info.name ?? ""}`}</title>
             </Helmet>
 
-            <div className="grid grid-cols-3 max-h-full">
-                <div className="col-span-1">
+            <div
+                className="grid grid-cols-3 grid-rows-2 gap-6 w-full h-full max-h-screen"
+                style={{ maxWidth: "100vw" }}
+            >
+                <div className="row-span-2">
                     <h3>Players</h3>
                     <ul>
                         {players.map((p) => (
@@ -46,30 +52,39 @@ const RunWindow = (): JSX.Element => {
                         ))}
                     </ul>
                 </div>
-                <div className="grid grid-rows-2 h-full max-h-full col-span-2">
-                    <div>
-                        <h3>Log</h3>
-                        <pre className="overflow-scroll rounded-md bg-gray-400 max-h-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-rounded scrollbar-thumb-blue-700">
-                            {output.map((o) => (
-                                <div
-                                    key={o.content}
-                                    className={
-                                        o.type === "stderr"
-                                            ? "text-red-600"
-                                            : ""
-                                    }
-                                >
-                                    {o.content}
-                                </div>
-                            ))}
-                        </pre>
-                    </div>
-                    <div>
-                        <Repl exec={server.rcon} />
-                    </div>
+                <div className="col-span-2 max-h-full">
+                    <h3>Log</h3>
+                    <pre
+                        ref={log}
+                        className="p-2 overflow-scroll scrollbar-thin scrollbar-track-transparent scrollbar-thumb-rounded scrollbar-thumb-blue-700"
+                        style={{ maxHeight: "calc(100% - 1.5rem)" }}
+                    >
+                        {output.map((o) => (
+                            <div
+                                key={o.content}
+                                className={
+                                    o.type === "stderr" ? "text-red-600" : ""
+                                }
+                            >
+                                {o.content}
+                            </div>
+                        ))}
+                    </pre>
+                </div>
+                <div
+                    className="col-span-2"
+                    style={{ maxHeight: "calc(100% - 1.5rem)" }}
+                >
+                    <Repl
+                        className="max-h-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-rounded scrollbar-thumb-blue-700"
+                        prompt={`${
+                            info?.info.name.replace(/\s+/g, "-") ?? ""
+                        }>`}
+                        exec={server.rcon}
+                    />
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
