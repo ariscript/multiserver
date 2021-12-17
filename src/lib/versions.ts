@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import cmp from "semver-compare";
 
 export function getServerTypes(): string[] {
     return ["vanilla", "paper", "fabric"];
@@ -33,8 +34,15 @@ export async function getVersions(type: string): Promise<string[]> {
                     )
                     // we only want the release version number
                     .map((v) => v.id)
+                    .sort(cmp)
+                    .reverse()
             );
-        else return data.filter((v) => v.type === "release").map((v) => v.id);
+        else
+            return data
+                .filter((v) => v.type === "release")
+                .map((v) => v.id)
+                .sort(cmp)
+                .reverse();
     } else if (type === "paper") {
         const res = await fetch("https://papermc.io/api/v2/projects/paper");
         const data = (await res.json()) as {
@@ -45,7 +53,10 @@ export async function getVersions(type: string): Promise<string[]> {
         };
 
         // there are pre-releases in there as well
-        return data.versions.filter((v) => !/[a-z]/gi.test(v));
+        return data.versions
+            .filter((v) => !/[a-z]/gi.test(v))
+            .sort(cmp)
+            .reverse();
     }
     return [] as string[];
 }
