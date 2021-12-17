@@ -91,7 +91,6 @@
         "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
         "@electron-forge/maker-zip": "^6.0.0-beta.61",
         "@electron-forge/plugin-webpack": "6.0.0-beta.61",
-        "@types/download": "^8.0.1",
         "@types/react": "^17.0.35",
         "@types/react-dom": "^17.0.11",
         "@types/react-helmet": "^6.1.4",
@@ -127,7 +126,6 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-helmet": "^6.1.0",
-        "sanitize-filename": "^1.6.3",
-        "update-electron-app": "^2.0.1"
+        "sanitize-filename": "^1.6.3"
     }
 }

@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
 import { app, BrowserWindow, ipcMain } from "electron";
-import updater from "update-electron-app";
-import log from "electron-log";
 
 import { createInstance } from "./lib/instances/createInstance";
 import { getInstances } from "./lib/instances/getInstances";
@@ -20,8 +18,6 @@ declare const RUN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 if (require("electron-squirrel-startup")) {
     app.quit();
 }
-
-updater();
 
 let mainWindow: BrowserWindow;
 
