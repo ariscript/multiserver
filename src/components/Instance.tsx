@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
+import { PlayArrow, Edit, Folder, Delete } from "@mui/icons-material";
 
 import { InstanceOptions } from "../types";
 import fabricLogo from "../../img/fabric_logo.png";
@@ -33,6 +34,11 @@ const Instance = ({ info }: InstanceProps): JSX.Element => {
         ipc.runInstance(info.name);
     };
 
+    const handleOpen = () => {
+        handleClose();
+        ipc.openInstance(info.name);
+    };
+
     return (
         <>
             <Button variant="outlined" onClick={handleClick}>
@@ -47,9 +53,24 @@ const Instance = ({ info }: InstanceProps): JSX.Element => {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleRun}>Run</MenuItem>
-                <MenuItem onClick={handleClose}>Edit</MenuItem>
-                <MenuItem onClick={handleClose}>Delete</MenuItem>
+                <div className="font-[Roboto]">
+                    <MenuItem onClick={handleRun}>
+                        <PlayArrow />
+                        <span className="ml-2">Run</span>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <Edit />
+                        <span className="ml-2">Edit</span>
+                    </MenuItem>
+                    <MenuItem onClick={handleOpen}>
+                        <Folder />
+                        <span className="ml-2">Open folder</span>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <Delete />
+                        <span className="ml-2">Delete</span>
+                    </MenuItem>
+                </div>
             </Menu>
         </>
     );

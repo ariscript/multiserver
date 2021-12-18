@@ -17,6 +17,7 @@ export interface IpcChannels {
     closeWindow: () => void;
     getInstances: () => Promise<InstanceInfo[]>;
     runInstance: (name: string) => void;
+    openInstance: (name: string) => void;
 }
 
 export interface ServerIpc {
