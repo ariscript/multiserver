@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, shell } from "electron";
 
 import { createInstance } from "./lib/instances/createInstance";
 import { getInstances } from "./lib/instances/getInstances";
@@ -83,7 +84,7 @@ ipcMain.on("closeWindow", (e) => {
 
 ipcMain.handle("createInstance", createInstance);
 ipcMain.handle("getInstances", getInstances);
-ipcMain.on("runInstance", (e, name) => {
+ipcMain.on("runInstance", (e, name: string) => {
     const runWindow = new BrowserWindow({
         height: 600,
         width: 800,
@@ -97,6 +98,15 @@ ipcMain.on("runInstance", (e, name) => {
     runWindow.loadURL(RUN_WINDOW_WEBPACK_ENTRY);
 
     runInstance(e, name, runWindow);
+});
+
+ipcMain.on("openInstance", async (e, name: string) => {
+    const { path: instancePath } =
+        (await getInstances()).find((i) => i.info.name === name) ?? {};
+
+    if (!instancePath) throw new Error(`Instance ${name} not found`); // this should never happen
+
+    shell.openPath(instancePath);
 });
 
 export const getMainWindow = (): BrowserWindow => mainWindow;
