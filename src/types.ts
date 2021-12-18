@@ -18,6 +18,7 @@ export interface IpcChannels {
     getInstances: () => Promise<InstanceInfo[]>;
     runInstance: (name: string) => void;
     openInstance: (name: string) => void;
+    deleteInstance: (name: string) => void;
 }
 
 export interface ServerIpc {

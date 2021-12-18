@@ -12,6 +12,7 @@ contextBridge.exposeInMainWorld("ipc", {
     getInstances: () => ipcRenderer.invoke("getInstances"),
     runInstance: (name: string) => ipcRenderer.send("runInstance", name),
     openInstance: (name: string) => ipcRenderer.send("openInstance", name),
+    deleteInstance: (name: string) => ipcRenderer.send("deleteInstance", name),
 } as IpcChannels);
 
 contextBridge.exposeInMainWorld("server", {

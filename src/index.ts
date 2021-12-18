@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, ipcMain, shell, dialog } from "electron";
+
+import fs from "fs/promises";
 
 import { createInstance } from "./lib/instances/createInstance";
 import { getInstances } from "./lib/instances/getInstances";
@@ -99,7 +101,6 @@ ipcMain.on("runInstance", (e, name: string) => {
 
     runInstance(e, name, runWindow);
 });
-
 ipcMain.on("openInstance", async (e, name: string) => {
     const { path: instancePath } =
         (await getInstances()).find((i) => i.info.name === name) ?? {};
@@ -107,6 +108,27 @@ ipcMain.on("openInstance", async (e, name: string) => {
     if (!instancePath) throw new Error(`Instance ${name} not found`); // this should never happen
 
     shell.openPath(instancePath);
+});
+ipcMain.on("deleteInstance", async (e, name: string) => {
+    const { response } = await dialog.showMessageBox({
+        type: "question",
+        buttons: ["Yes", "No"],
+        defaultId: 1,
+        cancelId: 1,
+        title: "Confirm",
+        message: `Are you sure you want to delete server ${name}?`,
+    });
+
+    if (response !== 0) return;
+
+    const { path: instancePath } =
+        (await getInstances()).find((i) => i.info.name === name) ?? {};
+
+    if (!instancePath) throw new Error(`Instance ${name} not found`); // this should never happen
+
+    await fs.rmdir(instancePath, { recursive: true });
+
+    setTimeout(() => mainWindow.reload(), 500);
 });
 
 export const getMainWindow = (): BrowserWindow => mainWindow;

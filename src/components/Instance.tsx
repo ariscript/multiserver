@@ -39,6 +39,11 @@ const Instance = ({ info }: InstanceProps): JSX.Element => {
         ipc.openInstance(info.name);
     };
 
+    const handleDelete = () => {
+        handleClose();
+        ipc.deleteInstance(info.name);
+    };
+
     return (
         <>
             <Button variant="outlined" onClick={handleClick}>
@@ -66,7 +71,7 @@ const Instance = ({ info }: InstanceProps): JSX.Element => {
                         <Folder />
                         <span className="ml-2">Open folder</span>
                     </MenuItem>
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={handleDelete}>
                         <Delete />
                         <span className="ml-2">Delete</span>
                     </MenuItem>
