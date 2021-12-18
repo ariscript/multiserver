@@ -113,7 +113,7 @@ export async function runInstance(
 
     window.on("close", () => {
         try {
-            server.stdin.write("stop\n");
+            server.stdin.write("stop\n"); // no need to wait for server to fully load this way
             rconClient.close().catch((err) => log.error(err));
         } catch {
             server.kill();
@@ -121,6 +121,10 @@ export async function runInstance(
     });
 
     ipcMain.handle("rcon", async (event, command: string) => {
+        if (command === "stop") {
+            return "To stop the server, please close the window. The stop command is not needed.";
+        }
+
         log.debug(`RCON command to ${info.name}: ${command}`);
         const output = await rconClient.execute(command);
         log.debug(`RCON output from ${info.name}: ${output}`);
