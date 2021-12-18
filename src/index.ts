@@ -2,18 +2,25 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
 import { app, BrowserWindow, ipcMain, shell, dialog } from "electron";
+import log from "electron-log";
 
 import fs from "fs/promises";
+import path from "path";
 
 import { createInstance } from "./lib/instances/createInstance";
+import { fixLog4j } from "./lib/instances/common";
 import { getInstances } from "./lib/instances/getInstances";
 import { runInstance } from "./lib/instances/runInstance";
+import { instancesPath } from "./lib/constants";
+import type { InstanceEditOptions } from "./types";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 declare const NEW_INSTANCE_WINDOW_WEBPACK_ENTRY: string;
 declare const NEW_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
+declare const EDIT_INSTANCE_WINDOW_WEBPACK_ENTRY: string;
+declare const EDIT_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 declare const RUN_WINDOW_WEBPACK_ENTRY: string;
 declare const RUN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
@@ -79,6 +86,24 @@ ipcMain.on("newInstanceWindow", () => {
     newInstanceWindow.loadURL(NEW_INSTANCE_WINDOW_WEBPACK_ENTRY);
 });
 
+ipcMain.on("editInstanceWindow", async (e, name: string) => {
+    const editWindow = new BrowserWindow({
+        height: 500,
+        width: 400,
+        webPreferences: {
+            preload: EDIT_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY,
+        },
+    });
+
+    if (app.isPackaged) editWindow.removeMenu();
+
+    await editWindow.loadURL(EDIT_INSTANCE_WINDOW_WEBPACK_ENTRY);
+
+    log.debug("sending state", { name });
+
+    editWindow.webContents.send("initialState", { name });
+});
+
 ipcMain.on("closeWindow", (e) => {
     const sender = BrowserWindow.fromWebContents(e.sender);
     sender?.close();
@@ -86,6 +111,22 @@ ipcMain.on("closeWindow", (e) => {
 
 ipcMain.handle("createInstance", createInstance);
 ipcMain.handle("getInstances", getInstances);
+ipcMain.on("editInstance", async (e, name: string, i: InstanceEditOptions) => {
+    const instances = await getInstances();
+    const instance = instances.find((i) => i.info.name === name);
+    if (!instance) return;
+
+    const newInstance = { ...instance.info, ...i };
+
+    await fs.writeFile(
+        path.join(instance.path, "multiserver.config.json"),
+        JSON.stringify(newInstance, null, 2)
+    );
+    await fixLog4j(newInstance, instance.path);
+
+    BrowserWindow.fromWebContents(e.sender)?.close();
+    mainWindow.reload();
+});
 ipcMain.on("runInstance", (e, name: string) => {
     const runWindow = new BrowserWindow({
         height: 600,

@@ -34,6 +34,11 @@ const Instance = ({ info }: InstanceProps): JSX.Element => {
         ipc.runInstance(info.name);
     };
 
+    const handleEdit = () => {
+        handleClose();
+        ipc.editInstanceWindow(info.name);
+    };
+
     const handleOpen = () => {
         handleClose();
         ipc.openInstance(info.name);
@@ -63,7 +68,7 @@ const Instance = ({ info }: InstanceProps): JSX.Element => {
                         <PlayArrow />
                         <span className="ml-2">Run</span>
                     </MenuItem>
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={handleEdit}>
                         <Edit />
                         <span className="ml-2">Edit</span>
                     </MenuItem>

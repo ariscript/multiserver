@@ -7,7 +7,10 @@ import type { InstanceInfo, IpcChannels, ServerIpc } from "./types";
 
 contextBridge.exposeInMainWorld("ipc", {
     newInstanceWindow: () => ipcRenderer.send("newInstanceWindow"),
+    editInstanceWindow: (name: string) =>
+        ipcRenderer.send("editInstanceWindow", name),
     createInstance: (opts) => ipcRenderer.invoke("createInstance", opts),
+    editInstance: (name, opts) => ipcRenderer.send("editInstance", name, opts),
     closeWindow: () => ipcRenderer.send("closeWindow"),
     getInstances: () => ipcRenderer.invoke("getInstances"),
     runInstance: (name: string) => ipcRenderer.send("runInstance", name),
@@ -36,6 +39,14 @@ contextBridge.exposeInMainWorld("server", {
     },
     rcon: (command: string) => ipcRenderer.invoke("rcon", command),
 } as ServerIpc);
+
+contextBridge.exposeInMainWorld("state", {
+    onceInitialState: <T>(fn: (state: T) => Awaited<unknown>) =>
+        ipcRenderer.on("initialState", (event, state) => {
+            log.debug("recieved state in preload", state);
+            fn(state);
+        }),
+});
 
 window.onbeforeunload = () => {
     ipcRenderer.removeAllListeners("serverInfo");
