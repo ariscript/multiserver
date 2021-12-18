@@ -64,6 +64,8 @@ export async function runInstance(
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     const playerQuery = setInterval(async () => {
+        log.debug("Running periodic server query...");
+
         try {
             const results = await queryFull("localhost");
 

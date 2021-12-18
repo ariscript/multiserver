@@ -41,16 +41,16 @@ export async function createInstance(
         );
         await fs.mkdir(instanceRoot, { recursive: true });
 
-        log.silly("Writing configuration file");
+        log.debug("Writing configuration file");
         await fs.writeFile(
             path.join(instanceRoot, "multiserver.config.json"),
             JSON.stringify(opts, undefined, 4)
         );
 
-        log.silly("Writing eula.txt");
+        log.debug("Writing eula.txt");
         await fs.writeFile(path.join(instanceRoot, "eula.txt"), "eula=true");
 
-        log.silly("Writing server.properties using 1.18.1 template");
+        log.debug("Writing server.properties using 1.18.1 template");
         await fs.copyFile(
             path.join(resourcesPath, "server.properties"),
             path.join(instanceRoot, "server.properties")
