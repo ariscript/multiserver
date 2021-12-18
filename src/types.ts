@@ -6,6 +6,12 @@ export interface InstanceOptions {
     jvmArgs?: string;
 }
 
+export interface InstanceEditOptions {
+    name: string;
+    javaPath?: string;
+    jvmArgs?: string;
+}
+
 export interface InstanceInfo {
     path: string;
     info: InstanceOptions;
@@ -13,9 +19,11 @@ export interface InstanceInfo {
 
 export interface IpcChannels {
     newInstanceWindow: () => void;
+    editInstanceWindow: (name: string) => void;
     createInstance: (opts: InstanceOptions) => Promise<boolean>;
     closeWindow: () => void;
     getInstances: () => Promise<InstanceInfo[]>;
+    editInstance: (name: string, opts: InstanceEditOptions) => Promise<void>;
     runInstance: (name: string) => void;
     openInstance: (name: string) => void;
     deleteInstance: (name: string) => void;
@@ -29,4 +37,8 @@ export interface ServerIpc {
     onClose: (fn: () => Awaited<void>) => void;
     onCrash: (fn: (code: number | null) => Awaited<void>) => void;
     rcon: (command: string) => Promise<string>;
+}
+
+export interface IpcState {
+    onceInitialState: <T>(fn: (state: T) => Awaited<unknown>) => void;
 }

@@ -70,6 +70,14 @@
                                     }
                                 },
                                 {
+                                    "name": "edit_instance_window",
+                                    "html": "./src/index.html",
+                                    "js": "./src/windows/EditInstanceWindow.tsx",
+                                    "preload": {
+                                        "js": "./src/preload.ts"
+                                    }
+                                },
+                                {
                                     "name": "run_window",
                                     "html": "./src/index.html",
                                     "js": "./src/windows/RunWindow.tsx",
