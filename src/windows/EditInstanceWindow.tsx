@@ -27,6 +27,13 @@ const EditInstanceWindow = () => {
         });
     }, []);
 
+    useEffect(() => {
+        if (!inst) return;
+        if (!name) setName(inst.info.name);
+        if (!javaPath) setJavaPath(inst.info.javaPath ?? "");
+        if (!jvmArgs) setJvmArgs(inst.info.jvmArgs ?? "");
+    }, [inst]);
+
     const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         await ipc.editInstance(oldName, {
