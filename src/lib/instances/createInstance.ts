@@ -1,7 +1,5 @@
 import type { IpcMainInvokeEvent } from "electron";
-import fetch from "node-fetch";
 import log from "electron-log";
-import sanitize from "sanitize-filename";
 
 import https from "https";
 import fs from "fs/promises";
@@ -12,7 +10,7 @@ import cp from "child_process";
 import { getMainWindow } from "../../index";
 import { instancesPath, resourcesPath } from "../constants";
 import type { InstanceOptions } from "../../types";
-import { fixLog4j, getJarURL } from "./common";
+import { fixLog4j, getJarURL, sanitizedDirName } from "./common";
 
 /**
  * Creates a new minecraft server instance
@@ -24,9 +22,7 @@ export async function createInstance(
     opts: InstanceOptions
 ): Promise<boolean> {
     try {
-        const sanitizedName = sanitize(
-            opts.name.toLowerCase().replace(/\s/g, "_")
-        );
+        const sanitizedName = sanitizedDirName(opts.name);
 
         if (sanitizedName === "") {
             log.error(`Invalid instance name ${opts.name}`);
@@ -63,7 +59,7 @@ export async function createInstance(
             try {
                 await new Promise<void>((res, rej) => {
                     const installProcess = cp.spawn(
-                        `${opts.javaPath ?? "java"} -jar ${path.join(
+                        `${opts.javaPath || "java"} -jar ${path.join(
                             resourcesPath,
                             "fabric-installer.jar"
                         )} server -dir ${instanceRoot} -mcversion ${

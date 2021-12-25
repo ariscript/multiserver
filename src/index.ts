@@ -8,7 +8,7 @@ import fs from "fs/promises";
 import path from "path";
 
 import { createInstance } from "./lib/instances/createInstance";
-import { fixLog4j } from "./lib/instances/common";
+import { fixLog4j, sanitizedDirName } from "./lib/instances/common";
 import { getInstances } from "./lib/instances/getInstances";
 import { runInstance } from "./lib/instances/runInstance";
 import { instancesPath } from "./lib/constants";
@@ -108,6 +108,8 @@ ipcMain.on("closeWindow", (e) => {
     const sender = BrowserWindow.fromWebContents(e.sender);
     sender?.close();
 });
+
+ipcMain.handle("getDirName", (e, name) => sanitizedDirName(name));
 
 ipcMain.handle("createInstance", createInstance);
 ipcMain.handle("getInstances", getInstances);

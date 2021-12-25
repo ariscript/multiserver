@@ -1,9 +1,17 @@
 import log from "electron-log";
+import sanitize from "sanitize-filename";
+import fetch from "node-fetch";
+
 import https from "https";
 import fs from "fs/promises";
 import { createWriteStream } from "fs";
 import path from "path";
+
 import { InstanceOptions } from "../../types";
+
+export function sanitizedDirName(name: string): string {
+    return sanitize(name.toLowerCase().replace(/\s/g, "_"));
+}
 
 export async function fixLog4j(
     opts: InstanceOptions,
