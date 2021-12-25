@@ -3,6 +3,7 @@
 
 import { contextBridge, ipcRenderer } from "electron";
 import log from "electron-log";
+
 import type { InstanceInfo, IpcChannels, ServerIpc } from "./types";
 
 contextBridge.exposeInMainWorld("ipc", {
@@ -16,6 +17,7 @@ contextBridge.exposeInMainWorld("ipc", {
     runInstance: (name: string) => ipcRenderer.send("runInstance", name),
     openInstance: (name: string) => ipcRenderer.send("openInstance", name),
     deleteInstance: (name: string) => ipcRenderer.send("deleteInstance", name),
+    getDirName: (name: string) => ipcRenderer.invoke("getDirName", name),
 } as IpcChannels);
 
 contextBridge.exposeInMainWorld("server", {
@@ -59,3 +61,8 @@ window.onbeforeunload = () => {
 
 contextBridge.exposeInMainWorld("log", log.functions);
 contextBridge.exposeInMainWorld("ipcRenderer", ipcRenderer);
+
+contextBridge.exposeInMainWorld("theme", {
+    makeDark: () => document.body.classList.add("dark"),
+    makeLight: () => document.body.classList.remove("dark"),
+});

@@ -27,7 +27,7 @@ export async function runInstance(
     const { info, path } = instance;
 
     const server = cp.spawn(
-        `java ${info.jvmArgs ?? ""} -jar ${
+        `${info.javaPath || "java"} ${info.jvmArgs ?? ""} -jar ${
             info.type === "fabric" ? "fabric-server-launch.jar" : "server.jar"
         } nogui`,
         {

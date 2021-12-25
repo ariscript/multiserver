@@ -1,27 +1,61 @@
-import React, { useState, type FormEvent } from "react";
+import React, { useState, useEffect, type FormEvent } from "react";
 import ReactDOM from "react-dom";
+import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 
 import TypeSelect from "../components/TypeSelect";
 import VersionSelect from "../components/VersionSelect";
-import LabelInput from "../components/LabelInput";
-import type { InstanceOptions } from "../types";
+import type { InstanceInfo } from "../types";
 
 import "../app.global.css";
-import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 
 const NewInstanceWindow = () => {
     const [name, setName] = useState("");
-    const [type, setType] = useState<InstanceOptions["type"]>("vanilla");
+    const [type, setType] = useState<InstanceInfo["info"]["type"]>("vanilla");
     const [version, setVersion] = useState("1.18.1");
     const [javaPath, setJavaPath] = useState<string | undefined>();
     const [jvmArgs, setJvmArgs] = useState("");
 
     const [agreed, setAgreed] = useState(false);
 
-    const [err, setErr] = useState(false);
+    const [err, setErr] = useState("");
+
+    const [instances, setInstances] = useState<InstanceInfo[]>([]);
+
+    const [savePath, setSavePath] = useState("");
+
+    const isWindows = navigator.platform === "Win32";
+
+    useEffect(() => {
+        ipc.getInstances()
+            .then(setInstances)
+            .catch((err) => {
+                log.error(err);
+                setErr(
+                    "There was an error fetching instances. Check logs for details"
+                );
+            });
+    }, []);
+
+    const onNameChange = async (name: string) => {
+        setName(name);
+
+        const savePath = await ipc.getDirName(name);
+        setSavePath(savePath);
+
+        const dirnames = instances.map(
+            (i) => i.path.split(isWindows ? "\\" : "/").reverse()[0]
+        );
+
+        if (dirnames.includes(savePath)) {
+            setErr(
+                "An instance with that name (or saved directory location) already exists.\nTry a different name."
+            );
+        } else setErr("");
+    };
 
     const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         const result = await ipc.createInstance({
             name,
             type,
@@ -30,20 +64,20 @@ const NewInstanceWindow = () => {
             jvmArgs,
         });
 
-        log.info(`Status: ${result ? "good" : "bad"}`);
-
         if (result) {
             ipc.closeWindow();
         } else {
-            setErr(true);
+            setErr(
+                "There was an error creating the instance. Check the log file for more information."
+            );
         }
     };
 
     return (
         <div className="p-4">
             {err && (
-                <div className="rounded-md p-2 m-2 w-max bg-red-400">
-                    Error creating server. Check Logs for more information.
+                <div className="rounded-md p-2 mx-auto w-full bg-red-400">
+                    {err}
                 </div>
             )}
             <h2 className="font-xl font-bold mb-2">New Instance</h2>
@@ -57,8 +91,14 @@ const NewInstanceWindow = () => {
                     placeholder="My cool server"
                     required
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => onNameChange(e.target.value)}
                 />
+                {savePath && (
+                    <span>
+                        Will be saved as{" "}
+                        <span className="font-mono">{savePath}</span>
+                    </span>
+                )}
 
                 <div className="flex flex-row justify-start space-x-2">
                     <TypeSelect value={type} onChange={setType} />
@@ -99,7 +139,7 @@ const NewInstanceWindow = () => {
                     type="submit"
                     variant="contained"
                     color="primary"
-                    disabled={!agreed}
+                    disabled={!agreed || !!err}
                 >
                     Create
                 </Button>
