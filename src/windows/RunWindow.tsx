@@ -5,6 +5,7 @@ import Repl from "../components/Repl";
 
 import "../app.global.css";
 import { InstanceInfo } from "../types";
+import Player from "../components/Player";
 
 interface ServerOutput {
     type: "stdout" | "stderr";
@@ -48,7 +49,9 @@ const RunWindow = (): JSX.Element => {
                     <h3>Players</h3>
                     <ul>
                         {players.map((p) => (
-                            <li key={p}>{p}</li>
+                            <li>
+                                <Player username={p} key={p} />
+                            </li>
                         ))}
                     </ul>
                 </div>

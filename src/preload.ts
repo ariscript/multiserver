@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld("ipc", {
     openInstance: (name: string) => ipcRenderer.send("openInstance", name),
     deleteInstance: (name: string) => ipcRenderer.send("deleteInstance", name),
     getDirName: (name: string) => ipcRenderer.invoke("getDirName", name),
+    getAvatar: (username: string) => ipcRenderer.invoke("avatar", username),
 } as IpcChannels);
 
 contextBridge.exposeInMainWorld("server", {

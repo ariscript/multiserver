@@ -28,6 +28,7 @@ export interface IpcChannels {
     openInstance: (name: string) => void;
     deleteInstance: (name: string) => void;
     getDirName: (name: string) => Promise<string>;
+    getAvatar: (username: string) => Promise<string>;
 }
 
 export interface ServerIpc {

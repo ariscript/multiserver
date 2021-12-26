@@ -11,7 +11,7 @@ import { createInstance } from "./lib/instances/createInstance";
 import { fixLog4j, sanitizedDirName } from "./lib/instances/common";
 import { getInstances } from "./lib/instances/getInstances";
 import { runInstance } from "./lib/instances/runInstance";
-import { instancesPath } from "./lib/constants";
+import { getAvatar } from "./lib/avatar";
 import type { InstanceEditOptions } from "./types";
 
 // declarations for webpack magic constants for built react code
@@ -173,5 +173,7 @@ ipcMain.on("deleteInstance", async (e, name: string) => {
 
     setTimeout(() => mainWindow.reload(), 500);
 });
+
+ipcMain.handle("avatar", (e, username: string) => getAvatar(username));
 
 export const getMainWindow = (): BrowserWindow => mainWindow;
