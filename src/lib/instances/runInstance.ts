@@ -70,6 +70,8 @@ export async function runInstance(
     const playerQuery = setInterval(async () => {
         log.debug("Running periodic server query...");
 
+        if (!rconClient.isConnected) return; // don't query if the server isn't ready yet
+
         try {
             const results = await queryFull("localhost");
 
@@ -93,12 +95,12 @@ export async function runInstance(
                 oldPlayers = results.players.list;
             }
         } catch (e) {
-            log.silly(e);
+            log.debug(e);
         }
     }, 5000); // query results are cached for 5 seconds by the server
 
     server.on("close", (code) => {
-        rconClient.close().catch((err) => log.error(err));
+        rconClient.close();
 
         log.debug(
             `SERVER ${info.name} closed with exit code ${code ?? "null"}`
@@ -118,7 +120,8 @@ export async function runInstance(
     window.on("close", () => {
         try {
             server.stdin.write("stop\n"); // no need to wait for server to fully load this way
-            rconClient.close().catch((err) => log.error(err));
+            clearInterval(playerQuery);
+            rconClient.close();
         } catch {
             server.kill();
         }
@@ -128,6 +131,9 @@ export async function runInstance(
         if (command === "stop") {
             return "To stop the server, please close the window. The stop command is not needed.";
         }
+
+        if (!rconClient.isConnected)
+            return "RCON not connected. Try again after server loads.";
 
         log.debug(`RCON command to ${info.name}: ${command}`);
         const output = await rconClient.execute(command);
