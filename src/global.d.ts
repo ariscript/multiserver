@@ -1,4 +1,10 @@
-import type { IpcChannels, ServerIpc, IpcState } from "./types";
+import type {
+    IpcChannels,
+    ServerIpc,
+    IpcState,
+    MultiserverSettings,
+    IpcSettings,
+} from "./types";
 declare global {
     declare module "*.png" {
         const src: string;
@@ -12,9 +18,11 @@ declare global {
         state: IpcState;
         store: import("electron-store");
         theme: {
+            currentTheme: () => MultiserverSettings["theme"];
             makeDark: () => void;
             makeLight: () => void;
         };
+        settings: IpcSettings;
     }
     declare const ipc: IpcChannels;
     declare const server: ServerIpc;
@@ -23,7 +31,9 @@ declare global {
     declare const state: IpcState;
     declare const store: import("electron-store");
     declare const theme: {
+        currentTheme: () => MultiserverSettings["theme"];
         makeDark: () => void;
         makeLight: () => void;
     };
+    declare const settings: IpcSettings;
 }

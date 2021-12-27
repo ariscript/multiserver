@@ -17,9 +17,16 @@ export interface InstanceInfo {
     info: InstanceOptions;
 }
 
+export interface MultiserverSettings {
+    theme: "dark" | "light" | undefined;
+    defaultJavaPath: string | undefined;
+    defaultJvmArgs: string | undefined;
+}
+
 export interface IpcChannels {
     newInstanceWindow: () => void;
     editInstanceWindow: (name: string) => void;
+    settingsWindow: () => void;
     createInstance: (opts: InstanceOptions) => Promise<boolean>;
     closeWindow: () => void;
     getInstances: () => Promise<InstanceInfo[]>;
@@ -44,3 +51,11 @@ export interface ServerIpc {
 export interface IpcState {
     onceInitialState: <T>(fn: (state: T) => Awaited<unknown>) => void;
 }
+
+export type IpcSettings = {
+    [K in keyof MultiserverSettings as `set${Capitalize<K>}`]: (
+        p1: MultiserverSettings[K]
+    ) => void;
+} & {
+    get: () => Promise<MultiserverSettings>;
+};

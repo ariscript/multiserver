@@ -12,6 +12,7 @@ import { fixLog4j, sanitizedDirName } from "./lib/instances/common";
 import { getInstances } from "./lib/instances/getInstances";
 import { runInstance } from "./lib/instances/runInstance";
 import { getAvatar } from "./lib/avatar";
+import * as settings from "./lib/settings";
 import type { InstanceEditOptions } from "./types";
 
 // declarations for webpack magic constants for built react code
@@ -23,6 +24,8 @@ declare const EDIT_INSTANCE_WINDOW_WEBPACK_ENTRY: string;
 declare const EDIT_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 declare const RUN_WINDOW_WEBPACK_ENTRY: string;
 declare const RUN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
+declare const SETTINGS_WINDOW_WEBPACK_ENTRY: string;
+declare const SETTINGS_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -175,5 +178,26 @@ ipcMain.on("deleteInstance", async (e, name: string) => {
 });
 
 ipcMain.handle("avatar", (e, username: string) => getAvatar(username));
+
+ipcMain.on("settingsWindow", () => {
+    const settingsWindow = new BrowserWindow({
+        height: 500,
+        width: 400,
+        webPreferences: {
+            preload: SETTINGS_WINDOW_PRELOAD_WEBPACK_ENTRY,
+        },
+    });
+
+    if (app.isPackaged) settingsWindow.removeMenu();
+
+    settingsWindow.loadURL(SETTINGS_WINDOW_WEBPACK_ENTRY);
+});
+
+ipcMain.handle("getSettings", settings.getSettings);
+ipcMain.on("setTheme", (e, theme) => settings.setTheme(theme));
+ipcMain.on("setDefaultJavaPath", (e, path) =>
+    settings.setDefaultJavaPath(path)
+);
+ipcMain.on("setDefaultJvmArgs", (e, args) => settings.setDefaultJvmArgs(args));
 
 export const getMainWindow = (): BrowserWindow => mainWindow;
