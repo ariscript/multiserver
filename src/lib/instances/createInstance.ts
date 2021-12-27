@@ -11,6 +11,7 @@ import { getMainWindow } from "../../index";
 import { instancesPath, resourcesPath } from "../constants";
 import type { InstanceOptions } from "../../types";
 import { fixLog4j, getJarURL, sanitizedDirName } from "./common";
+import { getSettings } from "../settings";
 
 /**
  * Creates a new minecraft server instance
@@ -59,7 +60,10 @@ export async function createInstance(
             try {
                 await new Promise<void>((res, rej) => {
                     const installProcess = cp.spawn(
-                        `${opts.javaPath || "java"} -jar ${path.join(
+                        `${
+                            getSettings().defaultJavaPath ??
+                            (opts.javaPath || "java")
+                        } -jar ${path.join(
                             resourcesPath,
                             "fabric-installer.jar"
                         )} server -dir ${instanceRoot} -mcversion ${
