@@ -5,6 +5,7 @@ import cp from "child_process";
 
 import { getInstances } from "./getInstances";
 import { queryFull, RCON } from "minecraft-server-util";
+import { getSettings } from "../settings";
 
 export async function runInstance(
     _event: IpcMainEvent,
@@ -26,16 +27,19 @@ export async function runInstance(
 
     const { info, path } = instance;
 
-    const server = cp.spawn(
-        `${info.javaPath || "java"} ${info.jvmArgs ?? ""} -jar ${
-            info.type === "fabric" ? "fabric-server-launch.jar" : "server.jar"
-        } nogui`,
-        {
-            shell: true,
-            windowsHide: true,
-            cwd: path,
-        }
-    );
+    const command = `${
+        getSettings().defaultJavaPath ?? (info.javaPath || "java")
+    } ${getSettings().defaultJvmArgs ?? info.jvmArgs ?? ""} -jar ${
+        info.type === "fabric" ? "fabric-server-launch.jar" : "server.jar"
+    } nogui`;
+
+    log.debug(`Running command: \`${command}\``);
+
+    const server = cp.spawn(command, {
+        shell: true,
+        windowsHide: true,
+        cwd: path,
+    });
 
     const rconClient = new RCON();
     let oldPlayers: string[] = [];
