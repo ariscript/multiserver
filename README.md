@@ -18,8 +18,11 @@ You can easily build the app following [these instructions](BUILDING.md).
 ## Usage
 
 When you open the app, you will see the main window, where you will see all of your server profiles (if any).
-To create a new server, click on the + button at the bottom-right of the window.
-To run a server, click on its name and then click the run button.
+To create a new server, click on the + button at the bottom-right of the window:
+![Main window](img/readme/screenshot_main.png)
+
+To run a server, click on its name and then click the run button as shown below:
+![Server options](img/readme/screenshot_options.png)
 A new window will open showing the server log, a command line to execute commands on the server, and a sidebar on the left displaying player info.
 
 There is also a settings window where you can edit the app color theme, the default java executable path (color theme not implemented yet).
