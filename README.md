@@ -1,6 +1,6 @@
 # MultiServer
 
-![Discord](https://img.shields.io/discord/912005072563617862?color=5865f2&label=Discord&logo=Discord&logoColor=ffffff&style=for-the-badge)
+[![Discord](https://img.shields.io/discord/912005072563617862?color=5865f2&label=Discord&logo=Discord&logoColor=ffffff&style=for-the-badge)](https://discord.gg/CvEwcynFfe)
 ![GitHub all releases](https://img.shields.io/github/downloads/dheerajpv/multiserver/total?logo=Github&style=for-the-badge)
 
 ![MultiServer](img/banner.jpg)
