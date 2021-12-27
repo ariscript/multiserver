@@ -84,6 +84,14 @@
                                     "preload": {
                                         "js": "./src/preload.ts"
                                     }
+                                },
+                                {
+                                    "name": "settings_window",
+                                    "html": "./src/index.html",
+                                    "js": "./src/windows/SettingsWindow.tsx",
+                                    "preload": {
+                                        "js": "./src/preload.ts"
+                                    }
                                 }
                             ]
                         }

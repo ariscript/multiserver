@@ -4,12 +4,46 @@
 import { contextBridge, ipcRenderer } from "electron";
 import log from "electron-log";
 
-import type { InstanceInfo, IpcChannels, ServerIpc } from "./types";
+import {
+    getSettings,
+    setTheme,
+    setDefaultJavaPath,
+    setDefaultJvmArgs,
+} from "./lib/settings";
+import type {
+    InstanceInfo,
+    IpcChannels,
+    ServerIpc,
+    IpcSettings,
+    MultiserverSettings,
+} from "./types";
+
+// theme based on app setting
+const theme = getSettings().theme;
+
+window.addEventListener("DOMContentLoaded", () => {
+    if (theme === "dark") {
+        document.body.classList.add("dark");
+    } else if (theme === "light") {
+        document.body.classList.remove("dark");
+    } else {
+        // auto dark/light mode based on OS settings
+        const query = matchMedia("(prefers-color-scheme: dark)");
+        query.addEventListener("change", (e) => {
+            if (e.matches) {
+                document.body.classList.add("dark");
+            } else {
+                document.body.classList.remove("dark");
+            }
+        });
+    }
+});
 
 contextBridge.exposeInMainWorld("ipc", {
     newInstanceWindow: () => ipcRenderer.send("newInstanceWindow"),
     editInstanceWindow: (name: string) =>
         ipcRenderer.send("editInstanceWindow", name),
+    settingsWindow: () => ipcRenderer.send("settingsWindow"),
     createInstance: (opts) => ipcRenderer.invoke("createInstance", opts),
     editInstance: (name, opts) => ipcRenderer.send("editInstance", name, opts),
     closeWindow: () => ipcRenderer.send("closeWindow"),
@@ -64,6 +98,16 @@ contextBridge.exposeInMainWorld("log", log.functions);
 contextBridge.exposeInMainWorld("ipcRenderer", ipcRenderer);
 
 contextBridge.exposeInMainWorld("theme", {
+    currentTheme: () => getSettings().theme,
     makeDark: () => document.body.classList.add("dark"),
     makeLight: () => document.body.classList.remove("dark"),
 });
+
+contextBridge.exposeInMainWorld("settings", {
+    get: () =>
+        ipcRenderer.invoke("getSettings") as Promise<MultiserverSettings>,
+    setTheme: (theme) => ipcRenderer.send("setTheme", theme),
+    setDefaultJavaPath: (path) => ipcRenderer.send("setDefaultJavaPath", path),
+    setDefaultJvmArgs: (jvmArgs) =>
+        ipcRenderer.send("setDefaultJvmArgs", jvmArgs),
+} as IpcSettings);

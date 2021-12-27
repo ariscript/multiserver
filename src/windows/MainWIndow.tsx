@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Fab } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Add, Settings } from "@mui/icons-material";
 
 import "../app.global.css";
 import Instance from "../components/Instance";
@@ -32,13 +32,19 @@ const MainWindow = () => {
                 ))}
             </div>
 
+            <div className="mt-auto text-center">
+                <button onClick={ipc.settingsWindow}>
+                    <Settings /> Settings
+                </button>
+            </div>
+
             <div className="fixed bottom-4 right-4">
                 <Fab
                     color="primary"
                     aria-label="New instance"
                     onClick={ipc.newInstanceWindow}
                 >
-                    <AddIcon />
+                    <Add />
                 </Fab>
             </div>
         </div>
