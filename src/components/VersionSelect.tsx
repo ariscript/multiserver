@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Select, MenuItem } from "@mui/material";
-
+import { MenuItem, Select } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { getVersions } from "../lib/versions";
 
 interface VersionSelectProps {
@@ -23,8 +22,9 @@ const VersionSelect = ({
     }, [type]);
 
     return (
-        <div>
+        <div className="flex flex-1">
             <Select
+                className="flex-1"
                 name="version"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}

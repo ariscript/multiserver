@@ -1,12 +1,10 @@
-import React, { useState, useEffect, type FormEvent } from "react";
-import ReactDOM from "react-dom";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
-
+import React, { useEffect, useState, type FormEvent } from "react";
+import ReactDOM from "react-dom";
+import "../app.global.css";
 import TypeSelect from "../components/TypeSelect";
 import VersionSelect from "../components/VersionSelect";
 import type { InstanceInfo } from "../types";
-
-import "../app.global.css";
 
 const NewInstanceWindow = () => {
     const [name, setName] = useState("");
@@ -80,10 +78,10 @@ const NewInstanceWindow = () => {
                     {err}
                 </div>
             )}
-            <h2 className="font-xl font-bold mb-2">New Instance</h2>
+            <h2 className="font-2xl font-bold mb-2">New Instance</h2>
             <form
                 onSubmit={handleFormSubmit}
-                className="flex container flex-col space-y-1"
+                className="flex container flex-col gap-4"
             >
                 <TextField
                     name="name"
