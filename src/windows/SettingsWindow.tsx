@@ -1,10 +1,8 @@
-import React, { useState, useEffect, type FormEvent } from "react";
+import { Button, MenuItem, Select, TextField } from "@mui/material";
+import React, { useEffect, useState, type FormEvent } from "react";
 import ReactDOM from "react-dom";
-import { Button, Select, TextField, MenuItem } from "@mui/material";
-
-import type { MultiserverSettings } from "../types";
-
 import "../app.global.css";
+import type { MultiserverSettings } from "../types";
 
 const SettingsWindow = () => {
     const [settings, setSettings] = useState<MultiserverSettings | null>(null);
@@ -46,38 +44,51 @@ const SettingsWindow = () => {
 
     return (
         <div className="p-4">
-            <h2 className="font-xl font-bold mb-2">Settings</h2>
+            <h2 className="font-2xl font-bold mb-2">Settings</h2>
             <form
-                className="flex flex-col container space-y-1"
+                className="flex flex-col container gap-4"
                 onSubmit={handleFormSubmit}
             >
-                Theme
-                <Select
-                    name="theme"
-                    value={theme ?? "default"}
-                    onChange={(e) =>
-                        setTheme(e.target.value as MultiserverSettings["theme"])
-                    }
+                <div className="flex flex-col gap-2">
+                    <span>Theme</span>
+                    <Select
+                        name="theme"
+                        value={theme ?? "default"}
+                        onChange={(e) =>
+                            setTheme(
+                                e.target.value as MultiserverSettings["theme"]
+                            )
+                        }
+                    >
+                        <MenuItem value="dark">Dark</MenuItem>
+                        <MenuItem value="light">Light</MenuItem>
+                        <MenuItem value="default">Default</MenuItem>
+                    </Select>
+                </div>
+                <div className="flex flex-col gap-2">
+                    <span>Default Java Path (advanced)</span>
+                    <TextField
+                        name="default-java-path"
+                        label="Default Java Path"
+                        value={defaultJavaPath}
+                        onChange={(e) => setDefaultJavaPath(e.target.value)}
+                    />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <span>Default JVM Args (advanced)</span>
+                    <TextField
+                        name="default-jvm-args"
+                        label="Default JVM Args"
+                        value={defaultJvmArgs}
+                        onChange={(e) => setDefaultJvmArgs(e.target.value)}
+                    />
+                </div>
+                <Button
+                    className="mt-2"
+                    type="submit"
+                    variant="contained"
+                    color="primary"
                 >
-                    <MenuItem value="dark">Dark</MenuItem>
-                    <MenuItem value="light">Light</MenuItem>
-                    <MenuItem value="default">Default</MenuItem>
-                </Select>
-                Default Java Path (advanced)
-                <TextField
-                    name="default-java-path"
-                    label="Default Java Path"
-                    value={defaultJavaPath}
-                    onChange={(e) => setDefaultJavaPath(e.target.value)}
-                />
-                Default JVM Args (advanced)
-                <TextField
-                    name="default-jvm-args"
-                    label="Default JVM Args"
-                    value={defaultJvmArgs}
-                    onChange={(e) => setDefaultJvmArgs(e.target.value)}
-                />
-                <Button type="submit" variant="contained" color="primary">
                     Save
                 </Button>
             </form>

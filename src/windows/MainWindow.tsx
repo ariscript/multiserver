@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import { Fab } from "@mui/material";
 import { Add, Settings } from "@mui/icons-material";
-
+import { Fab } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import "../app.global.css";
 import Instance from "../components/Instance";
 import type { InstanceInfo } from "../types";
@@ -32,10 +31,14 @@ const MainWindow = () => {
                 ))}
             </div>
 
-            <div className="mt-auto text-center">
-                <button onClick={ipc.settingsWindow}>
-                    <Settings /> Settings
-                </button>
+            <div className="fixed bottom-4 left-4">
+                <Fab
+                    color="primary"
+                    aria-label="New instance"
+                    onClick={ipc.settingsWindow}
+                >
+                    <Settings />
+                </Fab>
             </div>
 
             <div className="fixed bottom-4 right-4">
