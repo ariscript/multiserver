@@ -81,7 +81,7 @@ const NewInstanceWindow = () => {
             <h2 className="font-2xl font-bold mb-2">New Instance</h2>
             <form
                 onSubmit={handleFormSubmit}
-                className="flex container flex-col gap-4"
+                className="flex container flex-col gap-3"
             >
                 <TextField
                     name="name"
