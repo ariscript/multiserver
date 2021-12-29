@@ -29,6 +29,9 @@ window.addEventListener("DOMContentLoaded", () => {
     } else {
         // auto dark/light mode based on OS settings
         const query = matchMedia("(prefers-color-scheme: dark)");
+
+        if (query.matches) document.body.classList.add("dark");
+
         query.addEventListener("change", (e) => {
             if (e.matches) {
                 document.body.classList.add("dark");
