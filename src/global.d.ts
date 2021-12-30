@@ -17,11 +17,6 @@ declare global {
         ipcRenderer: import("electron").IpcRenderer;
         state: IpcState;
         store: import("electron-store");
-        theme: {
-            currentTheme: () => MultiserverSettings["theme"];
-            makeDark: () => void;
-            makeLight: () => void;
-        };
         settings: IpcSettings;
     }
     declare const ipc: IpcChannels;
@@ -30,10 +25,5 @@ declare global {
     declare const ipcRenderer: import("electron").IpcRenderer;
     declare const state: IpcState;
     declare const store: import("electron-store");
-    declare const theme: {
-        currentTheme: () => MultiserverSettings["theme"];
-        makeDark: () => void;
-        makeLight: () => void;
-    };
     declare const settings: IpcSettings;
 }
