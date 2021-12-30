@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
 import { Fab } from "@mui/material";
 import { Add, Settings } from "@mui/icons-material";
 
 import "../app.global.css";
 import Instance from "../components/Instance";
+import { render } from "../lib/render";
 import type { InstanceInfo } from "../types";
 
 const MainWindow = () => {
@@ -51,9 +51,4 @@ const MainWindow = () => {
     );
 };
 
-ReactDOM.render(
-    <React.StrictMode>
-        <MainWindow />
-    </React.StrictMode>,
-    document.getElementById("root")
-);
+render(MainWindow);

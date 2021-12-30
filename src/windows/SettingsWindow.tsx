@@ -1,10 +1,10 @@
 import React, { useState, useEffect, type FormEvent } from "react";
-import ReactDOM from "react-dom";
 import { Button, Select, TextField, MenuItem } from "@mui/material";
 
 import type { MultiserverSettings } from "../types";
 
 import "../app.global.css";
+import { render } from "../lib/render";
 
 const SettingsWindow = () => {
     const [settings, setSettings] = useState<MultiserverSettings | null>(null);
@@ -85,9 +85,4 @@ const SettingsWindow = () => {
     );
 };
 
-ReactDOM.render(
-    <React.StrictMode>
-        <SettingsWindow />
-    </React.StrictMode>,
-    document.getElementById("root")
-);
+render(SettingsWindow);

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, type FormEvent } from "react";
-import ReactDOM from "react-dom";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 
 import TypeSelect from "../components/TypeSelect";
 import VersionSelect from "../components/VersionSelect";
+import { render } from "../lib/render";
 import type { InstanceInfo } from "../types";
 
 import "../app.global.css";
@@ -148,9 +148,4 @@ const NewInstanceWindow = () => {
     );
 };
 
-ReactDOM.render(
-    <React.StrictMode>
-        <NewInstanceWindow />
-    </React.StrictMode>,
-    document.getElementById("root")
-);
+render(NewInstanceWindow);
