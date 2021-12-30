@@ -1,7 +1,8 @@
-import { Button, MenuItem, Select, TextField } from "@mui/material";
 import React, { useEffect, useState, type FormEvent } from "react";
-import ReactDOM from "react-dom";
+import { Button, MenuItem, Select, TextField } from "@mui/material";
+
 import "../app.global.css";
+import { render } from "../lib/render";
 import type { MultiserverSettings } from "../types";
 
 const SettingsWindow = () => {
@@ -96,9 +97,4 @@ const SettingsWindow = () => {
     );
 };
 
-ReactDOM.render(
-    <React.StrictMode>
-        <SettingsWindow />
-    </React.StrictMode>,
-    document.getElementById("root")
-);
+render(SettingsWindow);

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import ReactDOM from "react-dom";
 import Helmet from "react-helmet";
 import Repl from "../components/Repl";
 
 import "../app.global.css";
 import { InstanceInfo } from "../types";
 import Player from "../components/Player";
+import { render } from "../lib/render";
 
 interface ServerOutput {
     type: "stdout" | "stderr";
@@ -91,9 +91,4 @@ const RunWindow = (): JSX.Element => {
     );
 };
 
-ReactDOM.render(
-    <React.StrictMode>
-        <RunWindow />
-    </React.StrictMode>,
-    document.getElementById("root")
-);
+render(RunWindow);

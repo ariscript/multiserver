@@ -194,7 +194,12 @@ ipcMain.on("settingsWindow", () => {
 });
 
 ipcMain.handle("getSettings", settings.getSettings);
-ipcMain.on("setTheme", (e, theme) => settings.setTheme(theme));
+ipcMain.on("setTheme", (e, theme) => {
+    settings.setTheme(theme);
+
+    const windows = BrowserWindow.getAllWindows();
+    windows.forEach((w) => w.webContents.send("themeChange", theme));
+});
 ipcMain.on("setDefaultJavaPath", (e, path) =>
     settings.setDefaultJavaPath(path)
 );
