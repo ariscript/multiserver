@@ -1,6 +1,5 @@
 import { MenuItem, Select } from "@mui/material";
-import React, { useState, useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import { getServerTypes } from "../lib/versions";
 import type { InstanceOptions } from "../types";
 
@@ -17,8 +16,9 @@ const TypeSelect = ({ value, onChange }: TypeSelectProps): JSX.Element => {
     }, []);
 
     return (
-        <div>
+        <div className="flex flex-1">
             <Select
+                className="flex-1"
                 name="server-type"
                 value={value}
                 onChange={(e) =>
