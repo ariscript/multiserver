@@ -1,11 +1,10 @@
 import React, { useState, useEffect, type FormEvent } from "react";
-import ReactDOM from "react-dom";
 import Helmet from "react-helmet";
-
-import type { InstanceInfo } from "../types";
+import { Button, TextField } from "@mui/material";
 
 import "../app.global.css";
-import { Button, TextField } from "@mui/material";
+import { render } from "../lib/render";
+import type { InstanceInfo } from "../types";
 
 const EditInstanceWindow = () => {
     const [oldName, setOldName] = useState<string>("");
@@ -86,9 +85,4 @@ const EditInstanceWindow = () => {
     );
 };
 
-ReactDOM.render(
-    <React.StrictMode>
-        <EditInstanceWindow />
-    </React.StrictMode>,
-    document.getElementById("root")
-);
+render(EditInstanceWindow);

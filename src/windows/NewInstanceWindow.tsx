@@ -1,9 +1,10 @@
-import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import React, { useEffect, useState, type FormEvent } from "react";
-import ReactDOM from "react-dom";
+import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
+
 import "../app.global.css";
 import TypeSelect from "../components/TypeSelect";
 import VersionSelect from "../components/VersionSelect";
+import { render } from "../lib/render";
 import type { InstanceInfo } from "../types";
 
 const NewInstanceWindow = () => {
@@ -146,9 +147,4 @@ const NewInstanceWindow = () => {
     );
 };
 
-ReactDOM.render(
-    <React.StrictMode>
-        <NewInstanceWindow />
-    </React.StrictMode>,
-    document.getElementById("root")
-);
+render(NewInstanceWindow);
