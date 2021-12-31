@@ -66,7 +66,6 @@ export async function runInstance(
             window.webContents.send("stderr", String(data));
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     const playerQuery = setInterval(async () => {
         log.debug("Running periodic server query...");
 
