@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import cmp from "semver-compare";
 
 export function getServerTypes(): string[] {
@@ -10,7 +9,7 @@ export async function getVersions(type: string): Promise<string[]> {
         const res = await fetch(
             "https://launchermeta.mojang.com/mc/game/version_manifest.json"
         );
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
         const data = (
             (await res.json()) as {
                 versions: {

@@ -33,7 +33,6 @@ const SettingsWindow = () => {
 
         // if the value is "", send undefined instead (to delete item)
         window.settings.setTheme(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             theme === "default" ? undefined : theme || undefined
         );

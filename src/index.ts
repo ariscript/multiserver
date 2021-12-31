@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-
 import { app, BrowserWindow, ipcMain, shell, dialog } from "electron";
 import log from "electron-log";
 

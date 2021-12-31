@@ -49,8 +49,8 @@ const RunWindow = (): JSX.Element => {
                     <h3>Players</h3>
                     <ul>
                         {players.map((p) => (
-                            <li>
-                                <Player username={p} key={p} />
+                            <li key={p}>
+                                <Player username={p} />
                             </li>
                         ))}
                     </ul>

@@ -102,8 +102,7 @@ export async function createInstance(
                 log.info("Server creation complete");
                 return true;
             } catch (e) {
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                log.error(`FABRIC INSTALLER failed: ${e}`);
+                log.error(`FABRIC INSTALLER failed: ${e as string}`);
                 return false;
             }
         }

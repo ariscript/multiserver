@@ -11,7 +11,10 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:import/recommended",
         "plugin:import/electron",
-        "plugin:import/typescript"
+        "plugin:import/typescript",
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
+        "prettier"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -19,7 +22,18 @@
         "sourceType": "module"
     },
     "rules": {
-        "import/no-unresolved": "off"
+        "import/no-unresolved": "off",
+        "import/no-named-as-default": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/no-unused-promises": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-non-null-assertion": "off"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     },
     "ignorePatterns": "/*.js"
 }
