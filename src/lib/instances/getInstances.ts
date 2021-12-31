@@ -7,7 +7,9 @@ import { pathExists } from "../pathExists";
 export async function getInstances(): Promise<InstanceInfo[]> {
     if (!(await pathExists(instancesPath))) await fs.mkdir(instancesPath);
 
-    const instances = await fs.readdir(instancesPath);
+    const instances = (await fs.readdir(instancesPath, { withFileTypes: true }))
+        .filter((f) => f.isDirectory()) // filter out files like .DS_Store
+        .map((f) => f.name);
 
     return Promise.all(
         instances.map(async (instance) => {
