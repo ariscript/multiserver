@@ -15,7 +15,12 @@
         "jsx": "react-jsx",
         "downlevelIteration": true,
         "paths": {
-            "*": ["node_modules/*"]
+            "#lib/*": ["./src/lib/*"],
+            "#instances/*": ["./src/lib/instances/*"],
+            "#windows/*": ["./src/windows/*"],
+            "#components/*": ["./src/components/*"],
+            "#img/*": ["./img/*"],
+            "#*": ["./src/*"]
         }
     },
     "include": ["src/**/*"]

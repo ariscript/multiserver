@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { PlayArrow, Edit, Folder, Delete } from "@mui/icons-material";
 
-import { InstanceOptions } from "../types";
-import fabricLogo from "../../img/fabric_logo.png";
-import paperLogo from "../../img/paper_logo.png";
-import vanillaLogo from "../../img/vanilla_logo.png";
+import type { InstanceOptions } from "#types";
+import fabricLogo from "#img/fabric_logo.png";
+import paperLogo from "#img/paper_logo.png";
+import vanillaLogo from "#img/vanilla_logo.png";
 
 const images = {
     fabric: fabricLogo,

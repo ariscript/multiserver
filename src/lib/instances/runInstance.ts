@@ -3,9 +3,9 @@ import log from "electron-log";
 
 import cp from "child_process";
 
-import { getInstances } from "./getInstances";
+import { getInstances } from "#instances/getInstances";
 import { queryFull, RCON } from "minecraft-server-util";
-import { getSettings } from "../settings";
+import { getSettings } from "#lib/settings";
 
 export async function runInstance(
     _event: IpcMainEvent,

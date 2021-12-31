@@ -1,8 +1,8 @@
 import fs from "fs/promises";
 import path from "path";
-import type { InstanceInfo, InstanceOptions } from "../../types";
-import { instancesPath } from "../constants";
-import { pathExists } from "../pathExists";
+import type { InstanceInfo, InstanceOptions } from "#types";
+import { instancesPath } from "#lib/constants";
+import { pathExists } from "#lib/pathExists";
 
 export async function getInstances(): Promise<InstanceInfo[]> {
     if (!(await pathExists(instancesPath))) await fs.mkdir(instancesPath);

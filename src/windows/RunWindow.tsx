@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import Helmet from "react-helmet";
-import Repl from "../components/Repl";
 
-import "../app.global.css";
-import { InstanceInfo } from "../types";
-import Player from "../components/Player";
-import { render } from "../lib/render";
+import Repl from "#components/Repl";
+import Player from "#components/Player";
+import { render } from "#lib/render";
+import type { InstanceInfo } from "#types";
+import "#app.global.css";
 
 interface ServerOutput {
     type: "stdout" | "stderr";

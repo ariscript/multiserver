@@ -7,11 +7,11 @@ import { createWriteStream } from "fs";
 import path from "path";
 import cp from "child_process";
 
-import { getMainWindow } from "../../index";
-import { instancesPath, resourcesPath } from "../constants";
-import type { InstanceOptions } from "../../types";
-import { fixLog4j, getJarURL, sanitizedDirName } from "./common";
-import { getSettings } from "../settings";
+import { getMainWindow } from "#index";
+import { instancesPath, resourcesPath } from "#lib/constants";
+import { fixLog4j, getJarURL, sanitizedDirName } from "#instances/common";
+import { getSettings } from "#lib/settings";
+import type { InstanceOptions } from "#types";
 
 /**
  * Creates a new minecraft server instance

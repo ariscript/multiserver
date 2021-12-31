@@ -4,13 +4,13 @@ import log from "electron-log";
 import fs from "fs/promises";
 import path from "path";
 
-import { createInstance } from "./lib/instances/createInstance";
-import { fixLog4j, sanitizedDirName } from "./lib/instances/common";
-import { getInstances } from "./lib/instances/getInstances";
-import { runInstance } from "./lib/instances/runInstance";
-import { getAvatar } from "./lib/avatar";
-import * as settings from "./lib/settings";
-import type { InstanceEditOptions } from "./types";
+import { createInstance } from "#lib/instances/createInstance";
+import { fixLog4j, sanitizedDirName } from "#lib/instances/common";
+import { getInstances } from "#lib/instances/getInstances";
+import { runInstance } from "#lib/instances/runInstance";
+import { getAvatar } from "#lib/avatar";
+import * as settings from "#lib/settings";
+import type { InstanceEditOptions } from "#types";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -109,7 +109,7 @@ ipcMain.on("closeWindow", (e) => {
     sender?.close();
 });
 
-ipcMain.handle("getDirName", (e, name) => sanitizedDirName(name));
+ipcMain.handle("getDirName", (e, name: string) => sanitizedDirName(name));
 
 ipcMain.handle("createInstance", createInstance);
 ipcMain.handle("getInstances", getInstances);
@@ -191,15 +191,17 @@ ipcMain.on("settingsWindow", () => {
 });
 
 ipcMain.handle("getSettings", settings.getSettings);
-ipcMain.on("setTheme", (e, theme) => {
+ipcMain.on("setTheme", (e, theme: "dark" | "light" | undefined) => {
     settings.setTheme(theme);
 
     const windows = BrowserWindow.getAllWindows();
     windows.forEach((w) => w.webContents.send("themeChange", theme));
 });
-ipcMain.on("setDefaultJavaPath", (e, path) =>
+ipcMain.on("setDefaultJavaPath", (e, path: string) =>
     settings.setDefaultJavaPath(path)
 );
-ipcMain.on("setDefaultJvmArgs", (e, args) => settings.setDefaultJvmArgs(args));
+ipcMain.on("setDefaultJvmArgs", (e, args: string) =>
+    settings.setDefaultJvmArgs(args)
+);
 
 export const getMainWindow = (): BrowserWindow => mainWindow;

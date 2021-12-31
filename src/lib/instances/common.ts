@@ -7,7 +7,7 @@ import fs from "fs/promises";
 import { createWriteStream } from "fs";
 import path from "path";
 
-import { InstanceOptions } from "../../types";
+import { InstanceOptions } from "#types";
 
 export function sanitizedDirName(name: string): string {
     return sanitize(name.toLowerCase().replace(/\s/g, "_"));

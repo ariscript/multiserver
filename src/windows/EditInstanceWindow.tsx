@@ -2,9 +2,9 @@ import { useState, useEffect, type FormEvent } from "react";
 import Helmet from "react-helmet";
 import { Button, TextField } from "@mui/material";
 
-import "../app.global.css";
-import { render } from "../lib/render";
-import type { InstanceInfo } from "../types";
+import { render } from "#lib/render";
+import type { InstanceInfo } from "#types";
+import "#app.global.css";
 
 const EditInstanceWindow = () => {
     const [oldName, setOldName] = useState<string>("");
