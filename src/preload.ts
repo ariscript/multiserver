@@ -11,9 +11,9 @@ import type {
 } from "./types";
 
 // theme based on app setting
-const theme = getSettings().theme;
+const currentTheme = getSettings().theme;
 
-window.addEventListener("DOMContentLoaded", () => {
+function watchTheme(theme = currentTheme) {
     if (theme === "dark") {
         document.body.classList.add("dark");
     } else if (theme === "light") {
@@ -32,12 +32,13 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-});
+}
 
-ipcRenderer.on("themeChange", (e, theme: string | undefined) => {
-    if (theme === "dark") document.body.classList.add("dark");
-    else document.body.classList.remove("dark");
-});
+window.addEventListener("DOMContentLoaded", () => watchTheme());
+
+ipcRenderer.on("themeChange", (e, theme: MultiserverSettings["theme"]) =>
+    watchTheme(theme)
+);
 
 contextBridge.exposeInMainWorld("ipc", {
     newInstanceWindow: () => ipcRenderer.send("newInstanceWindow"),
