@@ -1,5 +1,5 @@
 import { MenuItem, Select } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getVersions } from "../lib/versions";
 
 interface VersionSelectProps {

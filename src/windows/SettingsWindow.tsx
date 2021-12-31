@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Button, MenuItem, Select, TextField } from "@mui/material";
 
 import "../app.global.css";
@@ -6,8 +6,6 @@ import { render } from "../lib/render";
 import type { MultiserverSettings } from "../types";
 
 const SettingsWindow = () => {
-    const [settings, setSettings] = useState<MultiserverSettings | null>(null);
-
     const [theme, setTheme] = useState<MultiserverSettings["theme"]>();
     const [defaultJavaPath, setDefaultJavaPath] =
         useState<MultiserverSettings["defaultJavaPath"]>();
@@ -20,7 +18,6 @@ const SettingsWindow = () => {
             .then((currentSettings) => {
                 console.log(currentSettings);
 
-                setSettings(currentSettings);
                 setTheme(currentSettings.theme);
                 setDefaultJavaPath(currentSettings.defaultJavaPath);
                 setDefaultJvmArgs(currentSettings.defaultJvmArgs);

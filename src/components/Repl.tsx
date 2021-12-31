@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, type CSSProperties } from "react";
+import { useState, useEffect, useRef, type CSSProperties } from "react";
 
 import "../app.global.css";
 
