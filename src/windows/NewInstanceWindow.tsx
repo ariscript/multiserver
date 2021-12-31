@@ -1,11 +1,11 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 
-import "../app.global.css";
-import TypeSelect from "../components/TypeSelect";
-import VersionSelect from "../components/VersionSelect";
-import { render } from "../lib/render";
-import type { InstanceInfo } from "../types";
+import TypeSelect from "#components/TypeSelect";
+import VersionSelect from "#components/VersionSelect";
+import { render } from "#lib/render";
+import type { InstanceInfo } from "#types";
+import "#app.global.css";
 
 const NewInstanceWindow = () => {
     const [name, setName] = useState("");

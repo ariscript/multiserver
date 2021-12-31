@@ -1,4 +1,4 @@
-import type { IpcChannels, ServerIpc, IpcState, IpcSettings } from "./types";
+import type { IpcChannels, ServerIpc, IpcState, IpcSettings } from "#types";
 declare global {
     declare module "*.png" {
         const src: string;

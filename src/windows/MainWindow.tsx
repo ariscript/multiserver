@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Add, Settings } from "@mui/icons-material";
 import { Fab } from "@mui/material";
 
-import "../app.global.css";
-import Instance from "../components/Instance";
-import { render } from "../lib/render";
-import type { InstanceInfo } from "../types";
+import Instance from "#components/Instance";
+import { render } from "#lib/render";
+import type { InstanceInfo } from "#types";
+import "#app.global.css";
 
 const MainWindow = () => {
     const [instances, setInstances] = useState<InstanceInfo[]>([]);

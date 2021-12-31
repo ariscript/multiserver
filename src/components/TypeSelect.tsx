@@ -1,7 +1,8 @@
 import { MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getServerTypes } from "../lib/versions";
-import type { InstanceOptions } from "../types";
+
+import { getServerTypes } from "#lib/versions";
+import type { InstanceOptions } from "#types";
 
 interface TypeSelectProps {
     value: InstanceOptions["type"];

@@ -1,5 +1,5 @@
 import Store from "electron-store";
-import type { MultiserverSettings } from "../types";
+import type { MultiserverSettings } from "#types";
 
 const store = new Store<Record<string, string>>();
 export { store };

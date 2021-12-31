@@ -4,6 +4,7 @@
         "es6": true,
         "node": true
     },
+    "plugins": ["@typescript-eslint", "import"],
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",

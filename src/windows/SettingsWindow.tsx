@@ -1,9 +1,9 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Button, MenuItem, Select, TextField } from "@mui/material";
 
-import "../app.global.css";
-import { render } from "../lib/render";
-import type { MultiserverSettings } from "../types";
+import { render } from "#lib/render";
+import type { MultiserverSettings } from "#types";
+import "#app.global.css";
 
 const SettingsWindow = () => {
     const [theme, setTheme] = useState<MultiserverSettings["theme"]>();
