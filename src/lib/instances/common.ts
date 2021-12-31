@@ -17,7 +17,7 @@ export async function fixLog4j(
     opts: InstanceOptions,
     instanceRoot: string
 ): Promise<void> {
-    const [_, versionMajor] = opts.version.split(".").map(Number);
+    const versionMajor = opts.version.split(".").map(Number)[1];
 
     if (versionMajor < 18 || opts.version == "1.18") {
         let log4jArg = "";

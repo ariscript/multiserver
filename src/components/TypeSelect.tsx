@@ -1,5 +1,5 @@
 import { MenuItem, Select } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getServerTypes } from "../lib/versions";
 import type { InstanceOptions } from "../types";
 

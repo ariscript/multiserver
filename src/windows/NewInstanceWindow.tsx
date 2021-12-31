@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 
 import "../app.global.css";

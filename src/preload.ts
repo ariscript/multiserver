@@ -1,12 +1,7 @@
 import { contextBridge, ipcRenderer } from "electron";
 import log from "electron-log";
 
-import {
-    getSettings,
-    setTheme,
-    setDefaultJavaPath,
-    setDefaultJvmArgs,
-} from "./lib/settings";
+import { getSettings } from "./lib/settings";
 import type {
     InstanceInfo,
     IpcChannels,

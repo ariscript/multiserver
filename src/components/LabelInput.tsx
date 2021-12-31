@@ -1,5 +1,5 @@
+import { type ChangeEvent } from "react";
 import { TextField } from "@mui/material";
-import React, { type ChangeEvent } from "react";
 
 interface LabelInputProps {
     name: string;
