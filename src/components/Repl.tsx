@@ -67,7 +67,7 @@ const Repl = ({
                 <input
                     autoFocus
                     type="text"
-                    className="focus:outline-none w-full mb-2"
+                    className="focus:outline-none w-full mb-2 dark:bg-[#121212] dark:text-white"
                     value={command}
                     onChange={(e) => setCommand(e.target.value)}
                     onKeyDown={async (e) => {
