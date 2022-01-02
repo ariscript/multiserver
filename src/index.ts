@@ -204,4 +204,6 @@ ipcMain.on("setDefaultJvmArgs", (e, args: string) =>
     settings.setDefaultJvmArgs(args)
 );
 
+ipcMain.on("openMain", createWindow);
+
 export const getMainWindow = (): BrowserWindow => mainWindow;

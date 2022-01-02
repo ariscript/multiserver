@@ -32,6 +32,7 @@ const Instance = ({ info }: InstanceProps): JSX.Element => {
     const handleRun = () => {
         handleClose();
         ipc.runInstance(info.name);
+        ipc.closeWindow();
     };
 
     const handleEdit = () => {
