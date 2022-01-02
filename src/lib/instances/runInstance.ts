@@ -123,6 +123,8 @@ export async function runInstance(
             rconClient.close();
         } catch {
             server.kill();
+        } finally {
+            ipcMain.emit("openMain");
         }
     });
 
