@@ -1,44 +1,17 @@
 name: Release
 on:
-    release:
-        types:
-            - created
+    push:
+        tags:
+            - "v*"
 
 jobs:
-    publish_linux:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@main
-            - uses: actions/setup-node@main
-              with:
-                  node-version: 16
-            - name: install yarn
-              run: npm i -g yarn
-            - name: install dependencies
-              run: yarn
-            - name: publish
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: yarn publish
+    release:
+        runs-on: ${{ matrix.os }}
 
-    publish_mac:
-        runs-on: macos-latest
-        steps:
-            - uses: actions/checkout@main
-            - uses: actions/setup-node@main
-              with:
-                  node-version: 16
-            - name: install yarn
-              run: npm i -g yarn
-            - name: install dependencies
-              run: yarn
-            - name: publish
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: yarn publish
+        strategy:
+            matrix:
+                os: [macos-latest, ubuntu-latest, windows-latest]
 
-    publish_windows:
-        runs-on: windows-latest
         steps:
             - uses: actions/checkout@main
             - uses: actions/setup-node@main
