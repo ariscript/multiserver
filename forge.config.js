@@ -23,6 +23,17 @@ module.exports = {
             name: "@electron-forge/maker-dmg",
         },
     ],
+    publishers: [
+        {
+            name: "@electron-forge/publisher-github",
+            config: {
+                repository: {
+                    owner: "dheerajpv",
+                    name: "multiserver",
+                },
+            },
+        },
+    ],
     plugins: [
         [
             "@electron-forge/plugin-webpack",
