@@ -31,6 +31,7 @@ module.exports = {
                     owner: "dheerajpv",
                     name: "multiserver",
                 },
+                draft: true,
             },
         },
     ],

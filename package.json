@@ -12,7 +12,8 @@
         "make": "electron-forge make",
         "publish": "electron-forge publish",
         "lint": "eslint --ext .ts,.tsx .",
-        "typecheck": "yarn run tsc -noEmit"
+        "typecheck": "yarn run tsc -noEmit",
+        "postversion": "git push --follow-tags"
     },
     "keywords": [],
     "author": {
