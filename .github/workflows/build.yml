@@ -2,36 +2,13 @@ name: Build
 on: workflow_dispatch
 
 jobs:
-    build_linux:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@main
-            - uses: actions/setup-node@main
-              with:
-                  node-version: 16
-            - name: install yarn
-              run: npm i -g yarn
-            - name: install dependencies
-              run: yarn
-            - name: build
-              run: yarn make
+    build:
+        runs-on: ${{ matrix.os }}
 
-    build_mac:
-        runs-on: macos-latest
-        steps:
-            - uses: actions/checkout@main
-            - uses: actions/setup-node@main
-              with:
-                  node-version: 16
-            - name: install yarn
-              run: npm i -g yarn
-            - name: install dependencies
-              run: yarn
-            - name: build
-              run: yarn make
+        strategy:
+            matrix:
+                os: [macos-latest, ubuntu-latest, windows-latest]
 
-    build_windows:
-        runs-on: windows-latest
         steps:
             - uses: actions/checkout@main
             - uses: actions/setup-node@main
