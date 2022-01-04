@@ -19,7 +19,7 @@ jobs:
                   node-version: 16
             - name: install apt dependencies (ubuntu)
               if: ${{ matrix.os == 'ubuntu-latest' }}
-              run: sudo apt install -y flatpak flatpak-builder eu-strip
+              run: sudo apt install -y flatpak flatpak-builder elfutils
             - name: install yarn
               run: npm i -g yarn
             - name: install dependencies
