@@ -17,6 +17,9 @@ jobs:
             - uses: actions/setup-node@main
               with:
                   node-version: 16
+            - name: install apt dependencies (ubuntu)
+              if: os == ubuntu-latest
+              run: sudo apt install -y flatpak flatpak-builder eu-strip
             - name: install yarn
               run: npm i -g yarn
             - name: install dependencies
