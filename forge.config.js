@@ -10,17 +10,29 @@ module.exports = {
             name: "@electron-forge/maker-squirrel",
             config: {
                 name: "multiserver",
+                setupIcon: "./img/icons/icon_setup.ico",
+                iconUrl: `file://${__dirname}/img/icons/icon_main.ico`,
             },
         },
         {
             name: "@electron-forge/maker-zip",
-            platforms: ["darwin", "linux"],
+            platforms: ["linux"],
         },
         {
             name: "@electron-forge/maker-deb",
+            config: {
+                options: {
+                    categories: ["Game", "Utility"],
+                    homepage: "https://github.com/dheerajpv/multiserver",
+                    icon: "./img/icons/icon_main.png",
+                },
+            },
         },
         {
             name: "@electron-forge/maker-dmg",
+            config: {
+                icon: "./img/icons/icon_main.png",
+            },
         },
     ],
     publishers: [
