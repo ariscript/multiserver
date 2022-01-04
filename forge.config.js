@@ -34,6 +34,16 @@ module.exports = {
                 icon: "./img/icons/icon_main.png",
             },
         },
+        {
+            name: "@electron-forge/maker-flatpak",
+            config: {
+                options: {
+                    categories: ["Game", "Utility"],
+                    id: "io.githuv.dheerajpv.multiserver",
+                    productName: "MultiServer",
+                },
+            },
+        },
     ],
     publishers: [
         {
