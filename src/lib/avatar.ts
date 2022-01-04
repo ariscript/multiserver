@@ -50,7 +50,16 @@ export async function getAvatar(username: string): Promise<string> {
     const profile = JSON.parse(atob(profileRaw)) as MojangUserProfile;
 
     const img = await jimp.read(profile.textures.SKIN.url);
+    const img2 = img.clone();
+
     img.crop(8, 8, 8, 8);
+    img2.crop(40, 8, 8, 8);
+
+    img.composite(img2, 0, 0, {
+        mode: jimp.BLEND_DESTINATION_OVER,
+        opacitySource: 1,
+        opacityDest: 1,
+    });
     img.resize(64, 64, jimp.RESIZE_NEAREST_NEIGHBOR);
 
     return img.getBase64Async(jimp.MIME_PNG);
