@@ -5,7 +5,7 @@ on:
             - "v*"
 
 jobs:
-    release:
+    release-x64:
         runs-on: ${{ matrix.os }}
 
         strategy:
@@ -23,4 +23,25 @@ jobs:
             - name: publish
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: yarn publish && yarn publish --arch=arm64
+              run: yarn publish
+
+    # separate job for parallel building
+    release-arm64:
+        runs-on: ${{ matrix.os }}
+
+        strategy:
+            matrix:
+                os: [macos-latest, ubuntu-latest] # don't run on windows
+
+        steps:
+            - uses: actions/checkout@main
+            - uses: actions/setup-node@main
+              with:
+                  node-version: 16
+                  cache: yarn
+            - name: install dependencies
+              run: yarn
+            - name: publish
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: yarn publish --arch=arm64
