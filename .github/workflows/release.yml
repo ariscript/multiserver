@@ -1,30 +1,142 @@
 name: Release
+
 on:
     push:
+        branches:
+            - main
         tags:
-            - "v*"
+            - v[0-9]+.[0-9]+.[0-9]+*
 
 jobs:
-    release:
-        runs-on: ${{ matrix.os }}
+    bundle:
+        runs-on: ${{ matrix.platform.host }}
 
         strategy:
             matrix:
-                os: [macos-latest, ubuntu-latest, windows-latest]
-
+                platform:
+                    - host: windows-latest
+                      target: win32
+                      arch: x64
+                    - host: windows-latest
+                      target: win32
+                      arch: arm64
+                    - host: macOS-latest
+                      target: darwin
+                      arch: x64
+                    - host: macOS-latest
+                      target: darwin
+                      arch: arm64
+                    - host: macOS-latest
+                      arch: x64
+                      target: mas
+                    - host: macOS-latest
+                      arch: arm64
+                      target: mas
+                    - host: ubuntu-latest
+                      target: linux
+                      arch: x64
+                    - host: ubuntu-latest
+                      target: linux
+                      arch: arm64
         steps:
-            - uses: actions/checkout@main
-            - uses: actions/setup-node@main
+            - uses: actions/checkout@v2
+            - name: Setup Node.js
+              uses: actions/setup-node@v2.2.0
               with:
                   node-version: 16
-            - name: install apt dependencies (ubuntu)
-              if: ${{ matrix.os == 'ubuntu-latest' }}
-              run: sudo apt install -y flatpak flatpak-builder elfutils
-            - name: install yarn
-              run: npm i -g yarn
-            - name: install dependencies
-              run: yarn
-            - name: publish
+                  cache: yarn
+            - name: Bundle app
+              uses: electron-forge/bundle-action@main
+              with:
+                  target-arch: ${{ matrix.platform.arch }}
+                  target-platform: ${{ matrix.platform.target }}
+            # Archives the bundled app before uploading, to preserve permissions and symlinks.
+            # See: https://github.com/actions/upload-artifact#limitations
+            - name: Archive bundled app
+              run: tar cvf bundled-app-${{ matrix.platform.target }}-${{ matrix.platform.arch }}.tar out
+            - name: Save bundled app
+              uses: actions/upload-artifact@v1
+              with:
+                  name: bundled-app-${{ matrix.platform.target }}-${{ matrix.platform.arch }}
+                  path: bundled-app-${{ matrix.platform.target }}-${{ matrix.platform.arch }}.tar
+    installers:
+        needs: bundle
+        runs-on: ${{ matrix.distributable.os }}
+        strategy:
+            matrix:
+                distributable:
+                    - os: Windows-latest
+                      platform: win32
+                      arch: x64
+                      maker: squirrel
+                    - os: Windows-latest
+                      platform: win32
+                      arch: arm64
+                      maker: squirrel
+                    - os: macOS-latest
+                      platform: darwin
+                      arch: x64
+                      maker: dmg
+                    - os: macOS-latest
+                      platform: darwin
+                      arch: arm64
+                      maker: dmg
+                    - os: macOS-latest
+                      platform: mas
+                      arch: x64
+                      maker: dmg
+                    - os: macOS-latest
+                      platform: mas
+                      arch: arm64
+                      maker: dmg
+                    - os: Ubuntu-latest
+                      platform: linux
+                      arch: x64
+                      maker: zip
+                    - os: Ubuntu-latest
+                      platform: linux
+                      arch: arm64
+                      maker: zip
+                    - os: Ubuntu-latest
+                      platform: linux
+                      arch: x64
+                      maker: deb
+                    - os: Ubuntu-latest
+                      platform: linux
+                      arch: arm64
+                      maker: deb
+                    - os: Ubuntu-latest
+                      platform: linux
+                      arch: x64
+                      maker: flatpak
+                    - os: Ubuntu-latest
+                      platform: linux
+                      arch: arm64
+                      maker: flatpak
+        steps:
+            - uses: actions/checkout@v2
+            - name: Download bundled app artifact
+              uses: actions/download-artifact@v1
+              with:
+                  name: bundled-app-${{ matrix.distributable.platform }}-${{ matrix.distributable.arch }}
+            - name: Unarchive bundled app
+              shell: bash
+              run: tar xvf bundled-app-${{ matrix.distributable.platform }}-${{ matrix.distributable.arch }}/bundled-app-${{ matrix.distributable.platform }}-${{ matrix.distributable.arch }}.tar
+            - name: Setup Node.js
+              uses: actions/setup-node@v2.2.0
+              with:
+                  node-version: 16
+                  cache: yarn
+            - name: Generate distributables
+              uses: electron-forge/distributable-action@main
+              with:
+                  target-maker: "@electron-forge/maker-${{ matrix.distributable.maker }}"
+                  target-arch: ${{ matrix.distributable.arch }}
+                  target-platform: ${{ matrix.distributable.platform }}
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: yarn publish
+                  DEBUG: "electron-installer-snap:snapcraft"
+            - name: Save distributable
+              uses: actions/upload-artifact@v1
+              with:
+                  name: ${{ matrix.distributable.maker }} (${{ matrix.distributable.platform }} ${{ matrix.distributable.arch }})
+                  path: out/make
