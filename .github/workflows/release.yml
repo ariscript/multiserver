@@ -17,8 +17,7 @@ jobs:
             - uses: actions/setup-node@main
               with:
                   node-version: 16
-            - name: install yarn
-              run: npm i -g yarn
+                  cache: yarn
             - name: install dependencies
               run: yarn
             - name: publish
