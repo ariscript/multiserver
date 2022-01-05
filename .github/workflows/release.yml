@@ -37,9 +37,9 @@ jobs:
                       target: linux
                       arch: arm64
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@main
             - name: Setup Node.js
-              uses: actions/setup-node@v2.2.0
+              uses: actions/setup-node@main
               with:
                   node-version: 16
                   cache: yarn
@@ -53,7 +53,7 @@ jobs:
             - name: Archive bundled app
               run: tar cvf bundled-app-${{ matrix.platform.target }}-${{ matrix.platform.arch }}.tar out
             - name: Save bundled app
-              uses: actions/upload-artifact@v1
+              uses: actions/upload-artifact@main
               with:
                   name: bundled-app-${{ matrix.platform.target }}-${{ matrix.platform.arch }}
                   path: bundled-app-${{ matrix.platform.target }}-${{ matrix.platform.arch }}.tar
@@ -99,29 +99,23 @@ jobs:
                       arch: arm64
                       maker: deb
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@main
             - name: Download bundled app artifact
-              uses: actions/download-artifact@v1
+              uses: actions/download-artifact@main
               with:
                   name: bundled-app-${{ matrix.distributable.platform }}-${{ matrix.distributable.arch }}
             - name: Unarchive bundled app
               shell: bash
               run: tar xvf bundled-app-${{ matrix.distributable.platform }}-${{ matrix.distributable.arch }}/bundled-app-${{ matrix.distributable.platform }}-${{ matrix.distributable.arch }}.tar
             - name: Setup Node.js
-              uses: actions/setup-node@v2.2.0
+              uses: actions/setup-node@main
               with:
                   node-version: 16
                   cache: yarn
-            - name: Generate distributables
-              uses: electron-forge/distributable-action@main
-              with:
-                  target-maker: "@electron-forge/maker-${{ matrix.distributable.maker }}"
-                  target-arch: ${{ matrix.distributable.arch }}
-                  target-platform: ${{ matrix.distributable.platform }}
-              env:
-                  DEBUG: "electron-installer-snap:snapcraft"
+            - name: Publish
+              run: yarn publish
             - name: Save distributable
-              uses: actions/upload-artifact@v1
+              uses: actions/upload-artifact@main
               with:
                   name: ${{ matrix.distributable.maker }} (${{ matrix.distributable.platform }} ${{ matrix.distributable.arch }})
                   path: out/make
