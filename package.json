@@ -1,7 +1,7 @@
 {
     "name": "multiserver",
     "productName": "multiserver",
-    "version": "1.0.0-rc.13",
+    "version": "1.0.0-rc.14",
     "description": "My Electron application description",
     "repository": "https://github.com/dheerajpv/multiserver",
     "main": ".webpack/main",
