@@ -98,15 +98,6 @@ jobs:
                       platform: linux
                       arch: arm64
                       maker: deb
-
-                    - os: Ubuntu-latest
-                      platform: linux
-                      arch: x64
-                      maker: flatpak
-                    - os: Ubuntu-latest
-                      platform: linux
-                      arch: arm64
-                      maker: flatpak
         steps:
             - uses: actions/checkout@v2
             - name: Download bundled app artifact
@@ -121,9 +112,6 @@ jobs:
               with:
                   node-version: 16
                   cache: yarn
-            - name: Install flatpak dependencies (linux)
-              if: ${{ matrix.distributable.os == 'Ubuntu-latest' }}
-              run: sudo apt install -y flatpak flatpak-builder elfutils
             - name: Generate distributables
               uses: electron-forge/distributable-action@main
               with:
