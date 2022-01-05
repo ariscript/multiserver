@@ -122,7 +122,7 @@ jobs:
                   node-version: 16
                   cache: yarn
             - name: Install flatpak dependencies (linux)
-              if: ${{ matrix.distributable.os == "Ubuntu-latest" }}
+              if: ${{ matrix.distributable.os == 'Ubuntu-latest' }}
               run: sudo apt install -y flatpak flatpak-builder elfutils
             - name: Generate distributables
               uses: electron-forge/distributable-action@main
