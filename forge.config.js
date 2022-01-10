@@ -1,9 +1,13 @@
+const path = require("path");
+
 module.exports = {
     packagerConfig: {
         extraResource: [
             "./resources/server.properties",
             "./resources/fabric-installer.jar",
+            "./img/icons/icon_main.png",
         ],
+        icon: "./img/icons/icon_main",
     },
     makers: [
         {
@@ -11,7 +15,6 @@ module.exports = {
             config: {
                 name: "multiserver",
                 setupIcon: "./img/icons/icon_setup.ico",
-                iconUrl: `file://${__dirname}/img/icons/icon_main.ico`,
             },
         },
         {

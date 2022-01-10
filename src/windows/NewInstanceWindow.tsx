@@ -82,7 +82,7 @@ const NewInstanceWindow = () => {
             <h2 className="font-2xl font-bold mb-2">New Instance</h2>
             <form
                 onSubmit={handleFormSubmit}
-                className="flex container flex-col gap-3"
+                className="flex container flex-col gap-4"
             >
                 <TextField
                     name="name"
@@ -92,11 +92,13 @@ const NewInstanceWindow = () => {
                     value={name}
                     onChange={(e) => onNameChange(e.target.value)}
                 />
-                {savePath && (
+                {savePath ? (
                     <span>
                         Will be saved as{" "}
                         <span className="font-mono">{savePath}</span>
                     </span>
+                ) : (
+                    <div className="h-6"></div> // empty space to cover text location
                 )}
 
                 <div className="flex flex-row justify-start space-x-2">
