@@ -11,6 +11,7 @@ import { runInstance } from "#lib/instances/runInstance";
 import { getAvatar } from "#lib/avatar";
 import * as settings from "#lib/settings";
 import type { InstanceEditOptions } from "#types";
+import { resourcesPath } from "#lib/constants";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -39,6 +40,10 @@ const createWindow = () => {
         webPreferences: {
             preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
         },
+        icon:
+            process.platform === "linux"
+                ? `${process.resourcesPath}/icon_main.png`
+                : undefined,
     });
 
     if (app.isPackaged) mainWindow.removeMenu();
@@ -74,11 +79,15 @@ app.on("activate", () => {
 
 ipcMain.on("newInstanceWindow", () => {
     const newInstanceWindow = new BrowserWindow({
-        height: 500,
+        height: 550,
         width: 400,
         webPreferences: {
             preload: NEW_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY,
         },
+        icon:
+            process.platform === "linux"
+                ? `${process.resourcesPath}/icon_main.png`
+                : undefined,
     });
 
     if (app.isPackaged) newInstanceWindow.removeMenu();
@@ -93,6 +102,10 @@ ipcMain.on("editInstanceWindow", async (e, name: string) => {
         webPreferences: {
             preload: EDIT_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY,
         },
+        icon:
+            process.platform === "linux"
+                ? `${process.resourcesPath}/icon_main.png`
+                : undefined,
     });
 
     if (app.isPackaged) editWindow.removeMenu();
@@ -136,6 +149,10 @@ ipcMain.on("runInstance", (e, name: string) => {
         webPreferences: {
             preload: RUN_WINDOW_PRELOAD_WEBPACK_ENTRY,
         },
+        icon:
+            process.platform === "linux"
+                ? `${process.resourcesPath}/icon_main.png`
+                : undefined,
     });
 
     if (app.isPackaged) runWindow.removeMenu();
@@ -183,6 +200,10 @@ ipcMain.on("settingsWindow", () => {
         webPreferences: {
             preload: SETTINGS_WINDOW_PRELOAD_WEBPACK_ENTRY,
         },
+        icon:
+            process.platform === "linux"
+                ? `${process.resourcesPath}/icon_main.png`
+                : undefined,
     });
 
     if (app.isPackaged) settingsWindow.removeMenu();
