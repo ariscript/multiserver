@@ -5,6 +5,7 @@ import { Button, TextField } from "@mui/material";
 import { render } from "#lib/render";
 import type { InstanceInfo } from "#types";
 import "#app.global.css";
+import AdvancedOptions from "#components/AdvancedOptions";
 
 const EditInstanceWindow = () => {
     const [oldName, setOldName] = useState<string>("");
@@ -61,21 +62,12 @@ const EditInstanceWindow = () => {
                     onChange={(e) => setName(e.target.value)}
                 />
 
-                <TextField
-                    name="java-path"
-                    label="Java Path (advanced)"
-                    placeholder="java"
-                    value={javaPath ?? ""}
-                    onChange={(e) => setJavaPath(e.target.value)}
-                />
-
-                <TextField
-                    name="jvm-args"
-                    label="JVM Args (advanced)"
-                    placeholder="-Xmx1024M"
-                    value={jvmArgs ?? ""}
-                    onChange={(e) => setJvmArgs(e.target.value)}
-                />
+                <div className="my-4">
+                    <AdvancedOptions
+                        onJavaPathChange={(e) => setJavaPath(e.target.value)}
+                        onJvmArgsChange={(e) => setJvmArgs(e.target.value)}
+                    />
+                </div>
 
                 <Button type="submit" variant="contained" color="primary">
                     Save
