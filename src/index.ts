@@ -11,7 +11,6 @@ import { runInstance } from "#lib/instances/runInstance";
 import { getAvatar } from "#lib/avatar";
 import * as settings from "#lib/settings";
 import type { InstanceEditOptions } from "#types";
-import { resourcesPath } from "#lib/constants";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -79,8 +78,8 @@ app.on("activate", () => {
 
 ipcMain.on("newInstanceWindow", () => {
     const newInstanceWindow = new BrowserWindow({
-        height: 550,
-        width: 400,
+        height: 650,
+        width: 500,
         webPreferences: {
             preload: NEW_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY,
         },
@@ -97,7 +96,7 @@ ipcMain.on("newInstanceWindow", () => {
 
 ipcMain.on("editInstanceWindow", async (e, name: string) => {
     const editWindow = new BrowserWindow({
-        height: 500,
+        height: 600,
         width: 400,
         webPreferences: {
             preload: EDIT_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY,

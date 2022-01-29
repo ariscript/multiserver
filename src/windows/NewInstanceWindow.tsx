@@ -1,11 +1,22 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    TextField,
+    Typography,
+} from "@mui/material";
+import { ExpandMore } from "@mui/icons-material";
 
 import TypeSelect from "#components/TypeSelect";
 import VersionSelect from "#components/VersionSelect";
 import { render } from "#lib/render";
 import type { InstanceInfo } from "#types";
 import "#app.global.css";
+import AdvancedOptions from "#components/AdvancedOptions";
 
 const NewInstanceWindow = () => {
     const [name, setName] = useState("");
@@ -110,20 +121,9 @@ const NewInstanceWindow = () => {
                     />
                 </div>
 
-                <TextField
-                    name="java-path"
-                    label="Java Path (advanced)"
-                    placeholder="java"
-                    value={javaPath ?? ""}
-                    onChange={(e) => setJavaPath(e.target.value)}
-                />
-
-                <TextField
-                    name="jvm-args"
-                    label="JVM Args (advanced)"
-                    placeholder="-Xmx1024M"
-                    value={jvmArgs}
-                    onChange={(e) => setJvmArgs(e.target.value)}
+                <AdvancedOptions
+                    onJavaPathChange={(e) => setJavaPath(e.target.value)}
+                    onJvmArgsChange={(e) => setJvmArgs(e.target.value)}
                 />
 
                 <FormControlLabel
