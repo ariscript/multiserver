@@ -1,4 +1,6 @@
 import { app, BrowserWindow, ipcMain, shell, dialog } from "electron";
+import fetch from "node-fetch";
+import cmp from "semver-compare";
 import log from "electron-log";
 
 import fs from "fs/promises";
@@ -10,7 +12,7 @@ import { getInstances } from "#lib/instances/getInstances";
 import { runInstance } from "#lib/instances/runInstance";
 import { getAvatar } from "#lib/avatar";
 import * as settings from "#lib/settings";
-import type { InstanceEditOptions } from "#types";
+import type { InstanceEditOptions, Release } from "#types";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -54,7 +56,47 @@ const createWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", createWindow);
+app.on("ready", async () => {
+    try {
+        const res = await fetch(
+            "https://api.github.com/repos/dheerajpv/multiserver/releases"
+        );
+        const releases = (await res.json()) as Release[];
+
+        const latestStable = releases.find((r) => r.prerelease === false);
+        if (!latestStable) {
+            throw new Error("No stable release found"); // should not happen
+        }
+
+        const releaseNumber = latestStable.tag_name.slice(1);
+
+        if (releaseNumber && cmp(releaseNumber, app.getVersion()) === 1) {
+            log.info(
+                `New release available: ${releaseNumber}, current: ${app.getVersion()}`
+            );
+
+            const { response } = await dialog.showMessageBox({
+                type: "info",
+                message: `Version ${releaseNumber} of MultiServer is available, but you are running ${app.getVersion()}.\nWould you like to update?`,
+                buttons: ["Yes", "No"],
+                defaultId: 0,
+                title: "Update?",
+            });
+
+            if (response === 0 && latestStable) {
+                log.info("User accepted update.");
+                shell.openExternal(latestStable.html_url);
+                process.exit();
+            } else {
+                log.info("User rejected update.");
+            }
+        }
+    } catch (e) {
+        log.error("Update check failed", e);
+    }
+
+    createWindow();
+});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
