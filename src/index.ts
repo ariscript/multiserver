@@ -227,7 +227,7 @@ ipcMain.on("deleteInstance", async (e, name: string) => {
 
     if (!instancePath) throw new Error(`Instance ${name} not found`); // this should never happen
 
-    await fs.rmdir(instancePath, { recursive: true });
+    await fs.rm(instancePath, { recursive: true });
 
     setTimeout(() => mainWindow.reload(), 500);
 });
