@@ -1,15 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Button,
-    Checkbox,
-    FormControlLabel,
-    TextField,
-    Typography,
-} from "@mui/material";
-import { ExpandMore } from "@mui/icons-material";
+import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 
 import TypeSelect from "#components/TypeSelect";
 import VersionSelect from "#components/VersionSelect";
