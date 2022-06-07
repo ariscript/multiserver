@@ -297,7 +297,9 @@ ipcMain.handle(
     async (e, instance: InstanceInfo, paths: string[]) => {
         for (const p of paths) {
             const filename = path.basename(p);
-            await fs.copyFile(p, path.join(instance.path, "mods", filename));
+            const destPath = path.join(instance.path, "mods", filename);
+            log.debug(`Copying mod ${filename} from ${p} to ${destPath}`);
+            await fs.copyFile(p, destPath);
         }
     }
 );
@@ -308,6 +310,11 @@ ipcMain.handle("getMods", async (e, instance: InstanceInfo) => {
 });
 
 ipcMain.handle("deleteMod", async (e, instance: InstanceInfo, mod: string) => {
+    log.debug(
+        `Deleting mod ${mod} from ${path.join(instance.path, "mods")}${
+            path.sep
+        }`
+    );
     await fs.rm(path.join(instance.path, "mods", mod));
 });
 
