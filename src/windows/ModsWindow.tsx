@@ -1,7 +1,7 @@
 import "#app.global.css";
 import { InstanceInfo } from "#types";
 import { DragEventHandler, useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { render } from "#lib/render";
 import { Delete, Extension } from "@mui/icons-material";
 import { Button } from "@mui/material";

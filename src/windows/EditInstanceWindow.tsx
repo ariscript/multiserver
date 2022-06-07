@@ -1,5 +1,5 @@
 import { useState, useEffect, type FormEvent } from "react";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { Button, TextField } from "@mui/material";
 
 import { render } from "#lib/render";

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CSSBaseline from "@mui/material/CssBaseline";
+import { HelmetProvider } from "react-helmet-async";
 
 interface ThemifyProps {
     children: React.ReactChild;
@@ -48,12 +49,15 @@ const Themify = ({ children }: ThemifyProps) => {
 };
 
 export function render(Component: () => JSX.Element): void {
-    ReactDOM.render(
+    const container = document.getElementById("root");
+    const root = createRoot(container!);
+    root.render(
         <React.StrictMode>
-            <Themify>
-                <Component />
-            </Themify>
-        </React.StrictMode>,
-        document.getElementById("root")
+            <HelmetProvider>
+                <Themify>
+                    <Component />
+                </Themify>
+            </HelmetProvider>
+        </React.StrictMode>
     );
 }

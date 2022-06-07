@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 import Repl from "#components/Repl";
 import Player from "#components/Player";
