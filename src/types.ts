@@ -36,6 +36,10 @@ export interface IpcChannels {
     deleteInstance: (name: string) => void;
     getDirName: (name: string) => Promise<string>;
     getAvatar: (username: string) => Promise<string>;
+    modsWindow: (name: string) => void;
+    copyMods: (instance: InstanceInfo, paths: string[]) => Promise<void>;
+    getMods: (instance: InstanceInfo) => Promise<string[]>;
+    deleteMod: (instance: InstanceInfo, mod: string) => Promise<void>;
 }
 
 export interface ServerIpc {

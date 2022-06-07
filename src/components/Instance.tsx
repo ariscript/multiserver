@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
-import { PlayArrow, Edit, Folder, Delete } from "@mui/icons-material";
+import {
+    PlayArrow,
+    Edit,
+    Folder,
+    Delete,
+    Extension,
+} from "@mui/icons-material";
 
 import type { InstanceOptions } from "#types";
 import fabricLogo from "#img/fabric_logo.png";
@@ -50,6 +56,11 @@ const Instance = ({ info }: InstanceProps): JSX.Element => {
         ipc.deleteInstance(info.name);
     };
 
+    const handleMods = () => {
+        handleClose();
+        ipc.modsWindow(info.name);
+    };
+
     return (
         <>
             <Button variant="outlined" onClick={handleClick}>
@@ -81,6 +92,12 @@ const Instance = ({ info }: InstanceProps): JSX.Element => {
                         <Delete />
                         <span className="ml-2">Delete</span>
                     </MenuItem>
+                    {info.type === "fabric" && (
+                        <MenuItem onClick={handleMods}>
+                            <Extension />
+                            <span className="ml-2">Mods</span>
+                        </MenuItem>
+                    )}
                 </div>
             </Menu>
         </>

@@ -2,7 +2,8 @@
     "compilerOptions": {
         "allowJs": true,
         "module": "commonjs",
-        "lib": ["esnext"],
+        "lib": ["esnext", "dom"],
+        "importHelpers": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
         "noImplicitAny": true,

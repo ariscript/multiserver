@@ -93,6 +93,14 @@ module.exports = {
                             },
                         },
                         {
+                            name: "mods_window",
+                            html: "./src/index.html",
+                            js: "./src/windows/ModsWindow.tsx",
+                            preload: {
+                                js: "./src/preload.ts",
+                            },
+                        },
+                        {
                             name: "settings_window",
                             html: "./src/index.html",
                             js: "./src/windows/SettingsWindow.tsx",

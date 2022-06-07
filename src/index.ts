@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell, dialog } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
 import fetch from "node-fetch";
 import cmp from "semver-compare";
 import log from "electron-log";
@@ -12,7 +12,7 @@ import { getInstances } from "#lib/instances/getInstances";
 import { runInstance } from "#lib/instances/runInstance";
 import { getAvatar } from "#lib/avatar";
 import * as settings from "#lib/settings";
-import type { InstanceEditOptions, Release } from "#types";
+import type { InstanceEditOptions, InstanceInfo, Release } from "#types";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -23,6 +23,8 @@ declare const EDIT_INSTANCE_WINDOW_WEBPACK_ENTRY: string;
 declare const EDIT_INSTANCE_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 declare const RUN_WINDOW_WEBPACK_ENTRY: string;
 declare const RUN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
+declare const MODS_WINDOW_WEBPACK_ENTRY: string;
+declare const MODS_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 declare const SETTINGS_WINDOW_WEBPACK_ENTRY: string;
 declare const SETTINGS_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
@@ -231,6 +233,28 @@ ipcMain.on("deleteInstance", async (e, name: string) => {
 
     setTimeout(() => mainWindow.reload(), 500);
 });
+ipcMain.on("modsWindow", async (e, name: string) => {
+    const modsWindow = new BrowserWindow({
+        height: 600,
+        width: 400,
+        webPreferences: {
+            preload: MODS_WINDOW_PRELOAD_WEBPACK_ENTRY,
+        },
+        icon:
+            process.platform === "linux"
+                ? `${process.resourcesPath}/icon_main.png`
+                : undefined,
+    });
+
+    if (app.isPackaged) modsWindow.removeMenu();
+
+    await modsWindow.loadURL(MODS_WINDOW_WEBPACK_ENTRY);
+
+    const instances = await getInstances();
+    const instance = instances.find((i) => i.info.name === name);
+
+    modsWindow.webContents.send("initialState", instance);
+});
 
 ipcMain.handle("avatar", (e, username: string) => getAvatar(username));
 
@@ -267,5 +291,24 @@ ipcMain.on("setDefaultJvmArgs", (e, args: string) =>
 );
 
 ipcMain.on("openMain", createWindow);
+
+ipcMain.handle(
+    "copyMods",
+    async (e, instance: InstanceInfo, paths: string[]) => {
+        for (const p of paths) {
+            const filename = path.basename(p);
+            await fs.copyFile(p, path.join(instance.path, "mods", filename));
+        }
+    }
+);
+
+ipcMain.handle("getMods", async (e, instance: InstanceInfo) => {
+    const files = await fs.readdir(path.join(instance.path, "mods"));
+    return files.filter((f) => f.endsWith(".jar"));
+});
+
+ipcMain.handle("deleteMod", async (e, instance: InstanceInfo, mod: string) => {
+    await fs.rm(path.join(instance.path, "mods", mod));
+});
 
 export const getMainWindow = (): BrowserWindow => mainWindow;
