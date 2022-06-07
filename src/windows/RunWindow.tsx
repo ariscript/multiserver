@@ -33,7 +33,7 @@ const RunWindow = (): JSX.Element => {
 
     useEffect(() => {
         if (log.current) log.current.scrollTop = log.current.scrollHeight;
-    });
+    }, [log]);
 
     return (
         <>

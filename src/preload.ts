@@ -54,6 +54,13 @@ contextBridge.exposeInMainWorld("ipc", {
     deleteInstance: (name: string) => ipcRenderer.send("deleteInstance", name),
     getDirName: (name: string) => ipcRenderer.invoke("getDirName", name),
     getAvatar: (username: string) => ipcRenderer.invoke("avatar", username),
+    modsWindow: (name: string) => ipcRenderer.send("modsWindow", name),
+    copyMods: (instance: InstanceInfo, paths: string[]) =>
+        ipcRenderer.invoke("copyMods", instance, paths),
+    getMods: (instance: InstanceInfo) =>
+        ipcRenderer.invoke("getMods", instance),
+    deleteMod: (instance: InstanceInfo, mod: string) =>
+        ipcRenderer.invoke("deleteMod", instance, mod),
 } as IpcChannels);
 
 contextBridge.exposeInMainWorld("server", {
@@ -80,10 +87,7 @@ contextBridge.exposeInMainWorld("server", {
 
 contextBridge.exposeInMainWorld("state", {
     onceInitialState: <T>(fn: (state: T) => Awaited<unknown>) =>
-        ipcRenderer.on("initialState", (event, state: T) => {
-            log.debug("recieved state in preload", state);
-            fn(state);
-        }),
+        ipcRenderer.once("initialState", (event, state: T) => fn(state)),
 });
 
 window.onbeforeunload = () => {
