@@ -48,7 +48,7 @@ export async function createInstance(
         log.debug("Writing eula.txt");
         await fs.writeFile(path.join(instanceRoot, "eula.txt"), "eula=true");
 
-        log.debug("Writing server.properties using 1.18.1 template");
+        log.debug("Writing server.properties using 1.19 template");
         await fs.copyFile(
             path.join(resourcesPath, "server.properties"),
             path.join(instanceRoot, "server.properties")
