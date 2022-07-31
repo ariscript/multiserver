@@ -6,13 +6,9 @@ export { store };
 
 export function getSettings(): MultiserverSettings {
     return {
-        theme: store.get("theme") as MultiserverSettings["theme"],
-        defaultJavaPath: store.get(
-            "defaultJavaPath"
-        ) as MultiserverSettings["defaultJavaPath"],
-        defaultJvmArgs: store.get(
-            "defaultJvmArgs"
-        ) as MultiserverSettings["defaultJvmArgs"],
+        theme: store.get("theme"),
+        defaultJavaPath: store.get("defaultJavaPath"),
+        defaultJvmArgs: store.get("defaultJvmArgs"),
     };
 }
 
