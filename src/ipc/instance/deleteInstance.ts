@@ -1,4 +1,4 @@
-import { getMainWindow } from "../";
+import { getMainWindow } from "../../";
 import { getInstances } from "#instances/getInstances";
 import { dialog, ipcMain } from "electron";
 import fs from "fs/promises";

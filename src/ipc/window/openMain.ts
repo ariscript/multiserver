@@ -1,4 +1,4 @@
 import { ipcMain } from "electron";
-import { createWindow } from "../";
+import { createWindow } from "../../";
 
 ipcMain.on("openMain", createWindow);
