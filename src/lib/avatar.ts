@@ -1,5 +1,5 @@
 import jimp from "jimp";
-import fetch from "node-fetch";
+import { fetch } from "undici";
 
 interface MojangUserProfileRaw {
     id: string;

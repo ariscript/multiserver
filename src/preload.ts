@@ -61,6 +61,7 @@ contextBridge.exposeInMainWorld("ipc", {
         ipcRenderer.invoke("getMods", instance),
     deleteMod: (instance: InstanceInfo, mod: string) =>
         ipcRenderer.invoke("deleteMod", instance, mod),
+    getVersions: (type: string) => ipcRenderer.invoke("getVersions", type),
 } as IpcChannels);
 
 contextBridge.exposeInMainWorld("server", {

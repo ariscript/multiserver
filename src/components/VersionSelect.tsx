@@ -1,6 +1,5 @@
 import { MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getVersions } from "#lib/versions";
 
 interface VersionSelectProps {
     type: string;
@@ -17,7 +16,9 @@ const VersionSelect = ({
 
     useEffect(() => {
         if (type) {
-            getVersions(type).then(setVersions).catch(console.error);
+            ipc.getVersions(type)
+                .then(setVersions)
+                .catch((err) => log.error(err));
         }
     }, [type]);
 

@@ -1,6 +1,6 @@
 import log from "electron-log";
 import sanitize from "sanitize-filename";
-import fetch from "node-fetch";
+import { fetch } from "undici";
 
 import https from "https";
 import fs from "fs/promises";
