@@ -40,6 +40,7 @@ export interface IpcChannels {
     copyMods: (instance: InstanceInfo, paths: string[]) => Promise<void>;
     getMods: (instance: InstanceInfo) => Promise<string[]>;
     deleteMod: (instance: InstanceInfo, mod: string) => Promise<void>;
+    getVersions: (type: string) => Promise<string[]>;
 }
 
 export interface ServerIpc {

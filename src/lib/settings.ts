@@ -1,7 +1,7 @@
 import Store from "electron-store";
 import type { MultiserverSettings } from "#types";
 
-const store = new Store<Record<string, string>>();
+const store = new Store<MultiserverSettings>();
 export { store };
 
 export function getSettings(): MultiserverSettings {

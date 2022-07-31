@@ -12,8 +12,8 @@ Each server can be of different versions and/or different modding/plugin platfor
 
 ## Installation
 
-Currently, there are no prebuilt binaries/installers for MultiServer, as it is not yet fully complete (and I cannot pay for the required signing certificates).
-You can easily build the app following [these instructions](BUILDING.md).
+The releeases page provides pre-built installers for Windows (on x64), macOS (both intel-based and Apple Silicon), and a generic Linux archive.
+If you would like installers built for your platform, do send a pull request with the relevant CI job (see [Contributing](#Contributing)).
 
 ## Usage
 
