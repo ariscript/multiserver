@@ -4,7 +4,7 @@ import { InstanceEditOptions } from "#types";
 import { BrowserWindow, ipcMain } from "electron";
 import fs from "fs/promises";
 import path from "path";
-import { getMainWindow } from "../";
+import { getMainWindow } from "../../";
 
 ipcMain.on(
     "editInstance",
