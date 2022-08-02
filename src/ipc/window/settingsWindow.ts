@@ -9,6 +9,7 @@ ipcMain.on("settingsWindow", () => {
         width: 400,
         webPreferences: {
             preload: SETTINGS_WINDOW_PRELOAD_WEBPACK_ENTRY,
+            sandbox: false,
         },
         icon:
             process.platform === "linux"
