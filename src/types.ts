@@ -21,6 +21,7 @@ export interface MultiserverSettings {
     theme: "dark" | "light" | undefined;
     defaultJavaPath: string | undefined;
     defaultJvmArgs: string | undefined;
+    instancePath: string;
 }
 
 export interface IpcChannels {

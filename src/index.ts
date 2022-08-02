@@ -2,7 +2,9 @@ import { app, BrowserWindow, dialog, shell } from "electron";
 import { fetch } from "undici";
 import cmp from "semver-compare";
 import log from "electron-log";
+import path from "path";
 import { Release } from "#types";
+import { getSettings, setInstancePath } from "#lib/settings";
 
 // declarations for webpack magic constants for built react code
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -76,6 +78,11 @@ app.on("ready", async () => {
     } catch (e) {
         log.error("Update check failed", e);
     }
+
+    if (!getSettings().instancePath)
+        setInstancePath(path.join(app.getPath("userData"), "instances"));
+
+    log.debug(getSettings().instancePath);
 
     createWindow();
 });

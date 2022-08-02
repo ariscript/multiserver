@@ -1,10 +1,12 @@
 import fs from "fs/promises";
 import path from "path";
 import type { InstanceInfo, InstanceOptions } from "#types";
-import { instancesPath } from "#lib/constants";
 import { pathExists } from "#lib/pathExists";
+import { getSettings } from "#lib/settings";
 
 export async function getInstances(): Promise<InstanceInfo[]> {
+    const instancesPath = getSettings().instancePath;
+
     if (!(await pathExists(instancesPath))) await fs.mkdir(instancesPath);
 
     const instances = (await fs.readdir(instancesPath, { withFileTypes: true }))

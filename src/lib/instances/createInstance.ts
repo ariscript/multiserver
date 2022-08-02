@@ -8,7 +8,7 @@ import path from "path";
 import cp from "child_process";
 
 import { getMainWindow } from "#index";
-import { instancesPath, resourcesPath } from "#lib/constants";
+import { resourcesPath } from "#lib/constants";
 import { fixLog4j, getJarURL, sanitizedDirName } from "#instances/common";
 import { getSettings } from "#lib/settings";
 import type { InstanceOptions } from "#types";
@@ -24,6 +24,7 @@ export async function createInstance(
 ): Promise<boolean> {
     try {
         const sanitizedName = sanitizedDirName(opts.name);
+        const instancesPath = getSettings().instancePath;
 
         if (sanitizedName === "") {
             log.error(`Invalid instance name ${opts.name}`);
