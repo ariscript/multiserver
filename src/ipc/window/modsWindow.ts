@@ -10,6 +10,7 @@ ipcMain.on("modsWindow", async (_e, name: string) => {
         width: 400,
         webPreferences: {
             preload: MODS_WINDOW_PRELOAD_WEBPACK_ENTRY,
+            sandbox: false,
         },
         icon:
             process.platform === "linux"

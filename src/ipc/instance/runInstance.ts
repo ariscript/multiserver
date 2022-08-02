@@ -10,6 +10,7 @@ ipcMain.on("runInstance", (e: IpcMainEvent, name: string) => {
         width: 800,
         webPreferences: {
             preload: RUN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+            sandbox: false,
         },
         icon:
             process.platform === "linux"
