@@ -110,4 +110,6 @@ contextBridge.exposeInMainWorld("settings", {
     setDefaultJavaPath: (path) => ipcRenderer.send("setDefaultJavaPath", path),
     setDefaultJvmArgs: (jvmArgs) =>
         ipcRenderer.send("setDefaultJvmArgs", jvmArgs),
+    setInstancePath: (instancePath) =>
+        ipcRenderer.send("setInstancePath", instancePath),
 } as IpcSettings);

@@ -16,6 +16,7 @@ import "./window/newInstanceWindow";
 import "./instance/openInstance";
 import "./window/openMain";
 import "./instance/runInstance";
+import "./settings/setInstancePath";
 import "./settings/setDefaultJavaPath";
 import "./settings/setDefaultJvmArgs";
 import "./settings/setTheme";

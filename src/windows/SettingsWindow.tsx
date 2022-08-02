@@ -6,21 +6,22 @@ import type { MultiserverSettings } from "#types";
 import "#app.global.css";
 
 const SettingsWindow = () => {
-    const [theme, setTheme] = useState<MultiserverSettings["theme"]>();
+    const [theme, setTheme] = useState<MultiserverSettings["theme"]>("light");
     const [defaultJavaPath, setDefaultJavaPath] =
-        useState<MultiserverSettings["defaultJavaPath"]>();
+        useState<MultiserverSettings["defaultJavaPath"]>("");
     const [defaultJvmArgs, setDefaultJvmArgs] =
-        useState<MultiserverSettings["defaultJvmArgs"]>();
+        useState<MultiserverSettings["defaultJvmArgs"]>("");
+    const [instancePath, setInstancePath] =
+        useState<MultiserverSettings["instancePath"]>("");
 
     useEffect(() => {
         window.settings
             .get()
             .then((currentSettings) => {
-                console.log(currentSettings);
-
                 setTheme(currentSettings.theme);
                 setDefaultJavaPath(currentSettings.defaultJavaPath);
                 setDefaultJvmArgs(currentSettings.defaultJvmArgs);
+                setInstancePath(currentSettings.instancePath);
             })
             .catch((err) => log.error(err));
     }, []);
@@ -35,6 +36,9 @@ const SettingsWindow = () => {
         );
         window.settings.setDefaultJavaPath(defaultJavaPath || undefined);
         window.settings.setDefaultJvmArgs(defaultJvmArgs || undefined);
+
+        log.debug("setting instance path to", instancePath);
+        window.settings.setInstancePath(instancePath ?? ""); // will set it to default value if empty
 
         ipc.closeWindow();
     };
@@ -61,6 +65,19 @@ const SettingsWindow = () => {
                         <MenuItem value="light">Light</MenuItem>
                         <MenuItem value="default">Default</MenuItem>
                     </Select>
+                </div>
+                <div className="flex flex-col gap-2">
+                    <span>Server Saves Path</span>
+                    <p>
+                        Changing this will safely move your current saves to the
+                        new location.
+                    </p>
+                    <TextField
+                        name="instances-path"
+                        label="Server Saves Path"
+                        value={instancePath}
+                        onChange={(e) => setInstancePath(e.target.value)}
+                    ></TextField>
                 </div>
                 <div className="flex flex-col gap-2">
                     <span>Default Java Path (advanced)</span>
