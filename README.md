@@ -7,7 +7,7 @@
 
 > The most pragmatic and efficient way to orchestrate multiple Minecraft servers.
 
-MultiServer is an app that allows for easy management of minecraft servers.
+MultiServer is an app that allows for easy management of Minecraft servers.
 Each server can be of different versions and/or different modding/plugin platforms.
 
 ## Installation
@@ -26,12 +26,17 @@ To run a server, click on its name and then click the run button as shown below:
 
 A new window will open showing the server log, a command line to execute commands on the server, and a sidebar on the left displaying player info.
 
-There is also a settings window where you can edit the app color theme, the default java executable path (color theme not implemented yet).
+There is also a settings window where you can edit the app settings, such as:
+
+-   Color theme (defaults to OS-detected)
+-   Default Java executable path (defaults to `java` in PATH)
+-   Default JVM arguments (defaults to none, useful for increasing the max heap size with the `-Xmx` flag)
+-   Directory to save all server instances in (no instance-specific override for this one)
+
 Specific settings on each server instance will override global settings.
 
-> More detailed information will be added in the wiki section of the repository.
-
-Currently the only way to add mods, plugins, or datapacks to a server is to open its directory (available as an option near the run button), though this may change in the future with popular demand.
+There is also limited support for a mods window on fabric servers where you can drag and delete mods.
+Opening the folder is probably still more featureful at the moment, but if there is demand a better mods window is not off the table.
 
 ## Contributing
 
@@ -48,6 +53,6 @@ Multiserver is licensed under version 3 of the [GNU General Public License](LICE
 
 ### Mojang
 
-By creating any minecraft servers (using MultiServer or not), you agree to follow the [relevant terms](https://www.minecraft.net/en-us/terms)
+By creating any Minecraft servers and using any other Minecraft content (using MultiServer or not), you agree to follow the [Minecraft EULA](https://www.minecraft.net/en-us/eula).
 
-MultiServer is in no way affiliated with or endorsed by Mojang AB, the Minecraft name, or Microsoft Corporation.
+MultiServer is in no way affiliated with or endorsed by Mojang Synergies AB, the Minecraft name, or Microsoft Corporation.
