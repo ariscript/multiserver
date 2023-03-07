@@ -16,6 +16,7 @@
         "strict": true,
         "jsx": "react-jsx",
         "downlevelIteration": true,
+        "forceConsistentCasingInFileNames": true,
         "paths": {
             "#lib/*": ["./src/lib/*"],
             "#instances/*": ["./src/lib/instances/*"],
