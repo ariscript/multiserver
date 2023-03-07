@@ -11,7 +11,7 @@ import AdvancedOptions from "#components/AdvancedOptions";
 const NewInstanceWindow = () => {
     const [name, setName] = useState("");
     const [type, setType] = useState<InstanceInfo["info"]["type"]>("vanilla");
-    const [version, setVersion] = useState("1.18.1");
+    const [version, setVersion] = useState("1.19.3");
     const [javaPath, setJavaPath] = useState<string | undefined>();
     const [jvmArgs, setJvmArgs] = useState("");
 
