@@ -51,9 +51,9 @@ module.exports = {
         },
     ],
     plugins: [
-        [
-            "@electron-forge/plugin-webpack",
-            {
+        {
+            name: "@electron-forge/plugin-webpack",
+            config: {
                 mainConfig: "./webpack.main.config.js",
                 devContentSecurityPolicy:
                     "default-src 'self' 'unsafe-inline' https://fonts.google.com https://fonts.googleapis.com https://fonts.gstatic.com https://launchermeta.mojang.com https://papermc.io data:; script-src 'self' 'unsafe-eval' 'unsafe-inline' data:",
@@ -111,6 +111,6 @@ module.exports = {
                     ],
                 },
             },
-        ],
+        },
     ],
 };
